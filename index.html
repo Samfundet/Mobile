@@ -4,8 +4,8 @@
 <html>
 
 <head>
-	<script language="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-	<script language="text/javascript">
+	<script language="javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+	<script language="javascript">
 		$(document).ready(function() {
 			var art = $("article.day");
 			art.find("ul").hide();
@@ -38,6 +38,51 @@
 
 	</script>
 	<style type="text/css">
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
 		.settings
 		{
 			display: none;
@@ -114,8 +159,9 @@
 
 		header.top button
 		{
-
 			display: table-cell; 
+
+			min-width: 40px;
 			width: 40px;
 			height: 40px;
 
@@ -149,30 +195,38 @@
 
 		nav button
 		{
-			padding: 10px 0px;
-			margin: 0;
 			display: inline-block;
+			width: 34%;
+
+			margin: 0px;
+			padding: 10px 0px;
+
 			background-color: #eee;
-			width: 33.3333%;
+			
+
 			border-right: 1px #ccc solid;
 			border-left: 1px #fff solid;
 			border-bottom: 1px #ccc solid;
+
 			font-size: 12px;
 		}
 
 		nav button[data-action=previous] 
 		{
+			width: 33%;
 			border-left: 0px #ccc solid;
 			border-radius: 5px 0 0 0;
 		}
 		nav button[data-action=next] 
 		{
+			width: 33%;
 			border-right: 0px #fff solid;
 			border-radius: 0 5px 0 0;
 		}
 
 		article[data-type=day] header
 		{
+			background-color: #eee;
 			background-image: -webkit-linear-gradient( #EEE , #DDD );
 			background-image: -moz-linear-gradient( #EEE , #DDD );
 			background-image: -ms-linear-gradient( #EEE , #DDD );
@@ -184,6 +238,7 @@
 			list-style: none;
 			margin: 0;
 			padding: 0px 10px ;
+			background-color: #eee;
 			background-image: -webkit-linear-gradient( #EEE , #DDD );
 			background-image: -moz-linear-gradient( #EEE , #DDD );
 			background-image: -ms-linear-gradient( #EEE , #DDD );
@@ -203,7 +258,9 @@
 		article header 
 		{
 
-			padding: 0px 10px;
+			margin: 0px;
+			padding: 10px;
+
 			color: #2F3E46;
 
 			font-size: 12px;
@@ -234,6 +291,7 @@
 		{
 			color: #eee;
 			text-shadow: 0 -1px 1px rgba(0,0,0,1);
+			padding: 5px 10px;
 		}
 		button
 		{
@@ -284,6 +342,9 @@
 {
 	background-color: #9A4E9E !important; 
 }
+.bg_f {
+		background-color: #333 !important; 
+}
 
 		.notop
 		{
@@ -296,12 +357,17 @@
 
 		fieldset
 		{
-			margin-top: 10px;
-			border: none;
+			margin: 10px 0px 10px;
+			padding: 10px 0px 0px;
+			border:none;
 		}
 
 		fieldset legend
 		{
+			margin-left: -10px;
+			padding: 10px 0px 10px 10px;
+			background: rgba(1,1,1,0.2);
+			width: 100%;
 			font-variant: small-caps;
 		}
 	</style>
@@ -328,7 +394,8 @@
 	</fieldset>
 	<fieldset>
 		<legend>Preferanser</legend>
-		<button class="notop nobottom"><span class="circle bg_f"></span>Fancy effekter</button>
+		<button class="notop notop"><span class="circle bg_f"></span>Fancy effekter</button>
+		<button class="nobottom nobottom"><span class="circle bg_f"></span>Bruk mobilversjon</button>
 	</fieldset>
 </section>
 
@@ -336,16 +403,14 @@
 <section class="main">
 
 <header class="top">
-	<button class="toggle_settings"></button>
+	<button class="toggle_settings">&nbsp;</button>
 	<h1><img src="http://www.samfundet.no/public/mobile-old/logo.png" alt="Samfundet"></h1>
 </header>
 
 
 <section data-type="weekview">
 	<nav>
-		<button data-action="previous" />
-		<button>Week 23</command>
-		<button data-action="next" />
+		<button data-action="previous">Forrige uke</button><button>Week 23</command><button data-action="next">Neste uke</button>
 	</nav>
 	<article data-type="day" class="day">
 		<header>
