@@ -1,0 +1,418 @@
+<html>
+
+<head>
+	<script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var art = $("article.day");
+			art.find("ul").hide();
+			art.click(function() { $(this).find("ul").slideToggle(); });
+		
+			var main = $(".main");
+			var top = $(".top");
+			var settings = $(".settings");
+			var settings_width = 250;
+			$("button.toggle_settings").click(function() {
+				if (settings.is(":visible"))
+				{
+					main.animate({left: "0px"});
+					top.animate({left: "0px"});
+					settings.animate({left: -settings_width/2 + "px"},  function() 
+					{
+						settings.hide();
+					});
+				}
+				else
+				{
+					settings.show();
+					main.animate({left: settings_width+"px"});
+					top.animate({left: settings_width+"px"});
+					settings.animate({left: "0px"});
+				}
+			});
+
+		});
+
+	</script>
+	<style>
+		.settings
+		{
+			display: none;
+			position: fixed;
+			left: -125px;
+
+			z-index: 0;
+			clear: none;
+			
+
+			/*padding-top: 40px;
+*/
+			width: 250px;
+			/*width: 200px;
+*/
+			height: 100%;
+		}
+
+		.top
+		{
+			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+			position: fixed;
+			width: 100%;
+
+			top: 0px;
+			left: 0px;
+
+			z-index: 3;
+			display: table; 
+
+
+			/*position: static;
+*/
+			height: 40px;
+			background: #282828;
+			vertical-align: middle;
+		}
+
+		.main
+		{
+			box-shadow: 0px 0px 20px #000;
+			z-index: 1;
+			width: 100%;
+			min-height: 100%;
+			position: absolute;
+			background: #A03033;
+			
+		}
+		body
+		{
+		
+			font-family: Helvetica, Arial, Verdana;
+			background: #222;
+			padding: 0;
+			margin: 0;
+		}
+		section[data-type=weekview] 
+		{
+			margin: 60px 10px;
+			border-radius: 5px;
+			box-shadow: 1px 1px 20px #000;
+			text-shadow: 0 1px 1px #fff;
+		}
+		section[data-type=weekview] nav
+		{
+
+		}
+
+		button
+		{
+			border: none;
+			background: none;
+		}
+
+		header.top button
+		{
+
+			display: table-cell; 
+			width: 40px;
+			height: 40px;
+
+			margin: 0;
+			padding: 0;
+			
+			background: url("settings.png") center no-repeat;
+			border: none;
+			border-right: 1px #444 solid;
+
+			height: 100%;
+
+
+		}
+
+		header.top h1
+		{
+			display: table-cell; 
+			padding: 0 40px 0 0;
+			text-align: center;
+			vertical-align: middle; 
+			width: 100%;
+			height: 100%;
+
+		}
+		header.top h1 img
+		{
+			max-width: 333px;
+			width: 80%;
+		}
+
+		nav button
+		{
+			padding: 10px 0px;
+			margin: 0;
+			display: inline-block;
+			background-color: #eee;
+			width: 33.3333%;
+			border-right: 1px #ccc solid;
+			border-left: 1px #fff solid;
+			border-bottom: 1px #ccc solid;
+			font-size: 12px;
+		}
+
+		nav button[data-action=previous] 
+		{
+			border-left: 0px #ccc solid;
+			border-radius: 5px 0 0 0;
+		}
+		nav button[data-action=next] 
+		{
+			border-right: 0px #fff solid;
+			border-radius: 0 5px 0 0;
+		}
+
+		article[data-type=day] header
+		{
+			background-image: -webkit-linear-gradient( #EEE , #DDD );
+			background-image: -moz-linear-gradient( #EEE , #DDD );
+			background-image: -ms-linear-gradient( #EEE , #DDD );
+			background-image: -o-linear-gradient( #EEE , #DDD );
+			background-image: linear-gradient( #EEE , #DDD );
+		}
+		article[data-type=day] ul
+		{
+			list-style: none;
+			margin: 0;
+			padding: 0px 10px ;
+			background-image: -webkit-linear-gradient( #EEE , #DDD );
+			background-image: -moz-linear-gradient( #EEE , #DDD );
+			background-image: -ms-linear-gradient( #EEE , #DDD );
+			background-image: -o-linear-gradient( #EEE , #DDD );
+			background-image: linear-gradient( #EEE , #DDD );
+		}
+		article[data-type=day] ul li
+		{
+			border-top: 1px #fff solid;
+			border-bottom: 1px #ccc solid;
+		}
+		article[data-type=event] header
+		{
+			background: none;
+			border: 0;
+		}
+		article header 
+		{
+
+			padding: 0px 10px;
+			color: #2F3E46;
+
+			font-size: 12px;
+			border-top: 1px #fff solid;
+			border-bottom: 1px #ccc solid;
+
+		}
+		article header h1 { padding: 0; margin: 0; }
+		article[data-type="event"]
+		{
+			margin: 0px 00px;
+			border-left: 10px #ccc solid;
+			padding-left: 10px;
+		}
+		article[data-type="event"]:hover
+		{
+			background-color: #ddd;
+		}
+		article[data-event-type="fest"] { border-color: #F99D31 ; }
+		article[data-event-type="happening"] { border-color: #9A4E9E ; }
+
+		article[data-type="event"] time 
+		{
+
+		}
+
+		.settings
+		{
+			color: #eee;
+			text-shadow: 0 -1px 1px rgba(0,0,0,1);
+		}
+		button
+		{
+			cursor: hand;
+		}
+		fieldset button
+		{
+			color: inherit;
+			text-shadow: inherit;
+
+			border-top: 1px rgba(255,255,255,0.2) solid;
+			border-bottom: 1px rgba(0,0,0,0.6) solid;
+			/*background-image: -webkit-linear-gradient( #EEE , #DDD );
+			background-image: -moz-linear-gradient( #EEE , #DDD );
+			background-image: -ms-linear-gradient( #EEE , #DDD );
+			background-image: -o-linear-gradient( #EEE , #DDD );
+			background-image: linear-gradient( #EEE , #DDD );
+*/
+			width: 100%;
+			text-align: left;
+			
+			margin: 0;
+			padding:  10px 5px 10px 0px;
+		}
+		fieldset button .circle
+		{
+			vertical-align: middle;
+			display: inline-block;
+			width: 24px;
+			height: 1em;
+			position: relative;
+			background: url("circle.png") center;
+		}
+
+.bg_r /* samfundsmøte og debatt */
+{
+	background-color: #A03033 !important; 
+}
+.bg_g /* fotball */
+{
+	background-color: #30A033 !important; 
+}
+.bg_y /* kultur og underholdning */
+{
+	background-color: #F99D31 !important; 
+}
+.bg_p /* konsert og uteliv */
+{
+	background-color: #9A4E9E !important; 
+}
+
+		.notop
+		{
+			border-top: none;
+		}
+		.nobottom
+		{
+			border-bottom: none;
+		}
+
+		fieldset
+		{
+			margin-top: 10px;
+			border: none;
+		}
+
+		fieldset legend
+		{
+			font-variant: small-caps;
+		}
+	</style>
+</head>
+<body>
+
+<section class="settings">
+	<fieldset>
+		<legend >Vis kategorier</legend>
+		<button class="notop">
+			<span class="circle bg_p"></span>
+			Konsert og Uteliv</button>
+		<button>
+			<span class="circle bg_y"></span>
+			Kultur og Underholdning</button>
+		<button>
+			<span class="circle bg_r"></span>
+			Samfundsm&oslash;te og Debatt</button>
+		<button>
+			<span class="circle bg_y"></span>
+			Film</button>
+		<button class="nobottom ">
+			<span class="circle bg_g"></span> Fotball og Sport</button>
+	</fieldset>
+	<fieldset>
+		<legend>Preferanser</legend>
+		<button class="notop nobottom"><span class="circle bg_f"></span>Fancy effekter</button>
+	</fieldset>
+</section>
+
+
+<section class="main">
+
+<header class="top">
+	<button class="toggle_settings"></button>
+	<h1><img src="http://www.samfundet.no/public/mobile/logo.png" alt="Samfundet"></h1>
+</header>
+
+
+<section data-type="weekview">
+	<nav>
+		<button data-action="previous" />
+		<button>Week 23</command>
+		<button data-action="next" />
+	</nav>
+	<article data-type="day" class="day">
+		<header>
+			<h2>
+				<time datetime="2012-08-27">Mandag 27. August</time>
+				<span data-type="event-count" data-event-type="fest">3</span>
+				<span data-type="event-count" data-event-type="happening">2</span>
+			</h2>
+		</header>
+		<ul>
+			<li>
+			<article data-type="event" data-event-type="fest">
+				<header>
+					<time datetime="2012-08-27 19:00">19:00</time>
+					<h3>Fest i strossa</h3>
+				</header>
+				<section>
+					<p>Dette blir et morsomt arrangement!</p>
+					<p>Husk badetøy.</p>
+				</summary>
+			</article>
+		</li><li>
+			<article data-type="event" data-event-type="happening">
+				<header>
+					<time datetime="2012-08-27 19:00">19:00</time>
+
+					<h3>Happening i storsalen</h3>
+				</header>
+				<summary>
+					<p>Dette blir et morsomt arrangement!</p>
+				</summary>
+			</article>
+		</li>
+	</ul>
+	</article>
+	<article data-type="day" class="day">
+		<header>
+			<h2>
+				<time datetime="2012-08-27">Mandag 27. August</time>
+				<span data-type="event-count" data-event-type="fest">3</span>
+				<span data-type="event-count" data-event-type="happening">2</span>
+			</h2>
+		</header>
+		<ul>
+			<li>
+			<article data-type="event" data-event-type="fest">
+				<header>
+					<time datetime="2012-08-27 19:00">19:00</time>
+					<h3>Fest i strossa</h3>
+				</header>
+				<section>
+					<p>Dette blir et morsomt arrangement!</p>
+					<p>Husk badetøy.</p>
+				</summary>
+			</article>
+		</li><li>
+			<article data-type="event" data-event-type="happening">
+				<header>
+					<time datetime="2012-08-27 19:00">19:00</time>
+
+					<h3>Happening i storsalen</h3>
+				</header>
+				<summary>
+					<p>Dette blir et morsomt arrangement!</p>
+				</summary>
+			</article>
+		</li>
+	</ul>
+	</article>
+</section>
+</section>
+</body>
+</html>
