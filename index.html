@@ -233,6 +233,10 @@ table {
 			border-radius: 0 5px 0 0;
 		}
 
+		.radius_bl { border-radius: 0 0 5px 0 !important; }
+		.radius_br { border-radius: 0 0 0 5px !important; }
+
+
 		article[data-type=day] header
 		{
 			background-color: #eee;
@@ -256,7 +260,8 @@ table {
 		}
 		.day ul li
 		{
-			padding: 10px 10px;
+			margin: 0px 10px;
+			padding: 10px 0px;
 			border-top: 1px #fff solid;
 			border-bottom: 1px #ccc solid;
 		}
@@ -366,14 +371,38 @@ table {
 .bg_f {
 		background-color: #333 !important; 
 }
+	strong
+	{
+		font-weight: bold;
+	}
+
+	.bullet
+	{
+		color: rgba(255,255,255,0.8);
+		font-weight: bold;
+		text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+		font-size: .6em;
+		display: inline-block;
+		float: right;
+		width: 1.0em;
+		height: 1.0em;
+		border-radius: 50%;
+		vertical-align: middle;
+		text-align: center;
+		padding: .3em;
+		margin: -.0em 0 .3em .6em;
+		box-shadow: 0 -1px 3px rgba(0,0,0,0.6);
+		-moz-box-shadow: 0 -1px 3px rgba(0,0,0,0.6);
+		-webkit-box-shadow: 0 -1px 3px rgba(0,0,0,0.6);
+	}
 
 		.notop
 		{
-			border-top: none;
+			border-top: none !important;
 		}
 		.nobottom
 		{
-			border-bottom: none;
+			border-bottom: none !important;
 		}
 
 		fieldset
@@ -436,13 +465,14 @@ table {
 	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
+				<span class="bullet bg_r" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -482,16 +512,16 @@ table {
 	</ul>
 	</article>
 	
-		<article data-type="day" class="day">
+<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">1</span>
+				<span class="bullet bg_g" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -530,16 +560,16 @@ table {
 		</li>
 	</ul>
 	</article>
-		<article data-type="day" class="day">
+	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -578,16 +608,16 @@ table {
 		</li>
 	</ul>
 	</article>
-		<article data-type="day" class="day">
+	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -626,16 +656,16 @@ table {
 		</li>
 	</ul>
 	</article>
-		<article data-type="day" class="day">
+	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -674,16 +704,16 @@ table {
 		</li>
 	</ul>
 	</article>
-		<article data-type="day" class="day">
+	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -722,16 +752,16 @@ table {
 		</li>
 	</ul>
 	</article>
-		<article data-type="day" class="day">
+	<article data-type="day" class="day">
 		<header>
 			<h2>
-				<time datetime="2012-08-27">Mandag 27. August</time>
-				<span data-type="event-count" data-event-type="fest">3</span>
-				<span data-type="event-count" data-event-type="happening">2</span>
+				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
+				<span class="bullet bg_p" data-event-type="fest">2</span>
+				<span class="bullet bg_y" data-event-type="happening">1</span>
 			</h2>
 		</header>
 		<ul>
-			<li class="notop">
+		<li class="notop">
 			<article data-type="event" data-event-type="fest">
 				<header>
 					<time datetime="2012-08-27 19:00">19:00</time>
@@ -770,6 +800,9 @@ table {
 		</li>
 	</ul>
 	</article>
+	<nav>
+		<button class="radius_br" data-action="previous">Forrige uke</button><button>Uke 23</command><button class="radius_bl" data-action="next">Neste uke</button>
+	</nav>
 </section>
 </section>
 </body>
