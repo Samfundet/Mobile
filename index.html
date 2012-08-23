@@ -32,9 +32,9 @@
 			var t = 0;
 			var main_dom = document.getElementById("main");
 			(function anim() {
-				var value = Math.sin(t) * 50 + 50;
-				main_dom.style.left = value + "px"; 
-				t+=0.04;
+				main_dom.style.left = t + "px"; 
+				t += 3;
+				if (t>200) t = 0; 
 				window.requestAnimFrame(anim);
 			})();
 		
