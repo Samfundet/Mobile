@@ -5,10 +5,13 @@
 
 <head>
 	<meta content='width=device-width, initial-scale=1, minimum-scale=1' name='viewport'>
-	<script language="javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+	<!--<script language="javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>-->
 	<script language="javascript">
-		$(document).ready(function() {
-			var art = $("article.day");
+		//$(document).ready(function() {
+		
+
+		/*
+		var art = $("article.day");
 		
 			art.find("ul").hide();
 			art.click(function() { $(this).find("ul").slideToggle(); });
@@ -17,28 +20,32 @@
 			var top = $(".top");
 			var settings = $(".settings");
 			var settings_width = 250;
-		
+			*/
+	 	window.requestAnimFrame = (function(){
+	      return  window.requestAnimationFrame       || 
+	              window.webkitRequestAnimationFrame || 
+	              window.mozRequestAnimationFrame    || 
+	              window.oRequestAnimationFrame      || 
+	              window.msRequestAnimationFrame     || 
+	              function( callback ){
+	                window.setTimeout(callback, 1000 / 60);
+	              };
+	    })();
 
-		 window.requestAnimFrame = (function(){
-		      return  window.requestAnimationFrame       || 
-		              window.webkitRequestAnimationFrame || 
-		              window.mozRequestAnimationFrame    || 
-		              window.oRequestAnimationFrame      || 
-		              window.msRequestAnimationFrame     || 
-		              function( callback ){
-		                window.setTimeout(callback, 1000 / 60);
-		              };
-		    })();
+
+		function ready()
+		{
 			var t = 0;
 			var main_dom = document.getElementById("main");
-			(function anim() {
+			setInterval(function anim() {
 				main_dom.style.left = t + "px"; 
 				t += 3;
 				if (t>200) t = 0; 
-				window.setTimeout(anim, 1000/60);
+				//window.setTimeout(anim, 1000/60);
 				//window.requestAnimFrame(anim);
-			})();
-		
+			}, 1000/60);
+		}
+		/*
 			$("button.toggle_settings").click(function() {
 				if (settings.is(":visible"))
 				{
@@ -72,7 +79,7 @@
 			});
 
 		});
-
+*/
 	</script>
 	<style type="text/css">
 html, body, div, span, applet, object, iframe,
@@ -458,7 +465,7 @@ table {
 		}
 	</style>
 </head>
-<body>
+<body onload="ready()">
 
 <section class="settings" id="settings">
 	<fieldset>
