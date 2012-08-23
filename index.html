@@ -9,6 +9,7 @@
 	<script language="javascript">
 		$(document).ready(function() {
 			var art = $("article.day");
+		
 			art.find("ul").hide();
 			art.click(function() { $(this).find("ul").slideToggle(); });
 		
@@ -16,6 +17,27 @@
 			var top = $(".top");
 			var settings = $(".settings");
 			var settings_width = 250;
+		
+
+		 window.requestAnimFrame = (function(){
+		      return  window.requestAnimationFrame       || 
+		              window.webkitRequestAnimationFrame || 
+		              window.mozRequestAnimationFrame    || 
+		              window.oRequestAnimationFrame      || 
+		              window.msRequestAnimationFrame     || 
+		              function( callback ){
+		                window.setTimeout(callback, 1000 / 60);
+		              };
+		    })();
+			var t = 0;
+			var main_dom = document.getElementById("main");
+			(function anim() {
+				var value = Math.sin(t) * 50 + 50;
+				main_dom.style.left = value + "px"; 
+				t+=0.04;
+				window.requestAnimFrame(anim);
+			})();
+		
 			$("button.toggle_settings").click(function() {
 				if (settings.is(":visible"))
 				{
@@ -24,14 +46,27 @@
 					settings.animate({left: -settings_width/2 + "px"},  function() 
 					{
 						settings.hide();
+
+						main.css( { 
+							position: "absolute",
+							top: 0,
+						});
+						window.scrollTo(200, 0);
 					});
 				}
 				else
 				{
+
+					main.css( { 
+						position: "fixed",
+						top: -window.pageYOffset+"px", 
+					});
+					settings.css( { position: "absolute" });
 					settings.show();
 					main.animate({left: settings_width+"px"});
 					top.animate({left: settings_width+"px"});
 					settings.animate({left: "0px"});
+
 				}
 			});
 
@@ -424,7 +459,7 @@ table {
 </head>
 <body>
 
-<section class="settings">
+<section class="settings" id="settings">
 	<fieldset>
 		<legend >Vis kategorier</legend>
 		<button class="notop">
@@ -450,7 +485,7 @@ table {
 </section>
 
 
-<section class="main">
+<section class="main" id="main">
 
 <header class="top">
 	<button class="toggle_settings">&nbsp;</button>
