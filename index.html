@@ -32,18 +32,40 @@
 	              };
 	    })();
 
-
-		function ready()
+	    var toggler = true;
+		function onLoad()
 		{
-			var t = 0;
-			var main_dom = document.getElementById("main");
+			main_dom = document.getElementById("main");
+			settings_dom = document.getElementById("settings");
+		} 
+
+		function onClick()
+		{
+				
+			//if (toggler)
+			{
+				settings_dom.style.webkitTransition = 'all 0.2s ease-out';
+			    settings_dom.style.webkitTransform = 'translateX(100px)';
+
+				main_dom.style.webkitTransition = 'all 0.2s ease-out';
+			    main_dom.style.webkitTransform = 'translateX(200px)';
+			}
+			//else
+			{
+			//	main_dom.style.webkitTransition = 'all 0.2s ease-out';
+			//  main_dom.style.webkitTransform = 'translateX(0px)';
+			}
+			//toggler = !toggler;
+			/*
+			main_dom.style.left = 0 + "px"; 
 			setInterval(function anim() {
-				main_dom.style.left = t + "px"; 
-				t += 10;
-				if (t>200) t = 0; 
+				value += 0.1;
+				var v = Math.cos(value * Math.PI + Math.PI) * 0.5 + 0.5;
+				main_dom.style.left = v*200 + "px"; 
+				if (value > 1.0) value = 0;
 				//window.setTimeout(anim, 1000/60);
 				//window.requestAnimFrame(anim);
-			}, 1000/24);
+			}, 1000/24);*/
 		}
 		/*
 			$("button.toggle_settings").click(function() {
@@ -129,7 +151,6 @@ table {
 
 		.settings
 		{
-			display: none;
 			position: fixed;
 			left: -125px;
 
@@ -147,6 +168,7 @@ table {
 
 		.top
 		{
+			-webkit-transform: "translateX(0px)";
 			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
 			-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
 			-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
@@ -159,9 +181,6 @@ table {
 			z-index: 3;
 			display: table; 
 
-
-			/*position: static;
-*/
 			height: 40px;
 			background: #282828;
 			vertical-align: middle;
@@ -169,14 +188,16 @@ table {
 
 		.main
 		{
-			/*box-shadow: 0px 0px 20px #000;
+ 			-webkit-transform: "translateX(0px)";
+
+			box-shadow: 0px 0px 20px #000;
 			-moz-box-shadow: 0px 0px 20px #000;
 			-webkit-box-shadow: 0px 0px 20px #000;
 			
-			z-index: 1;*/
+			z-index: 1;
 			width: 100%;
 			min-height: 100%;
-			position: fixed; /*absolute;*/
+			position: absolute;
 			background: #A03033;
 			
 		}
@@ -465,8 +486,9 @@ table {
 		}
 	</style>
 </head>
-<body onload="ready()">
-<!--
+<body onload="onLoad()" onclick="onClick()">
+
+
 <section class="settings" id="settings">
 	<fieldset>
 		<legend >Vis kategorier</legend>
@@ -491,16 +513,13 @@ table {
 		<button class="nobottom nobottom"><span class="circle bg_f"></span>Bruk mobilversjon</button>
 	</fieldset>
 </section>
--->
 
 <section class="main" id="main">
 
-<!--
 <header class="top">
 	<button class="toggle_settings">&nbsp;</button>
 	<h1><img src="http://www.samfundet.no/public/mobile-old/logo.png" alt="Samfundet"></h1>
 </header>
--->
 
 <section data-type="weekview">
 	<nav>
