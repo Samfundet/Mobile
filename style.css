@@ -1,0 +1,439 @@
+﻿html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+display: block;
+}
+body {
+line-height: 1;
+}
+ol, ul {
+list-style: none;
+}
+blockquote, q {
+quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+content: '';
+content: none;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+
+
+.settings
+{
+	position: absolute;
+	-webkit-Transition: all 0.4s ease-out;
+	-webkit-transform: translateX(-125px);
+	display: none;
+
+	z-index: 0;
+	clear: none;
+
+	width: 250px;
+	height: 100%;
+
+	color: #eee;
+
+	text-shadow: 0 -1px 1px rgba(0,0,0,1);
+
+	padding: 0px 10px;
+
+	display: block;
+	width: 0px;
+	overflow: hidden;
+		
+}
+
+
+header.top
+{
+	/*-webkit-transform: translateX(0px);
+	*/box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	width: 100%;
+
+	top: 0px;
+	left: 0px;
+
+	z-index: 3;
+	display: table; 
+
+	height: 40px;
+	background: #282828;
+	vertical-align: middle;
+
+	
+}
+
+.main
+{
+	-webkit-transform: translateX(0px);
+
+	box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	-webkit-box-shadow: 0px 0px 20px #000;
+	
+	z-index: 1;
+	width: 100%;
+	min-height: 100%;
+	position: absolute;
+	background: #A03033;
+	
+}
+body
+{
+
+	font-family: Helvetica, Arial, Verdana;
+	background: #222;
+	padding: 0;
+	margin: 0;
+}
+section.weekview 
+{
+	margin: 20px 10px;
+	border-radius: 5px;
+	box-shadow: 1px 1px 20px #000;
+	-moz-box-shadow: 1px 1px 20px #000;
+	-webkit-box-shadow: 1px 1px 20px #000;
+	
+	text-shadow: 0 1px 1px #fff;
+}
+section.weekview nav
+{
+
+}
+
+button
+{
+	border: none;
+	background: none;
+}
+
+header.top button
+{
+	display: table-cell; 
+
+	min-width: 40px;
+	width: 40px;
+	height: 40px;
+
+	margin: 0;
+	padding: 0;
+	
+	background: url("settings.png") center no-repeat;
+	border: none;
+	border-right: 1px #444 solid;
+
+	height: 100%;
+
+
+}
+
+header.top h1
+{
+	display: table-cell; 
+	padding: 0 40px 0 0;
+	text-align: center;
+	vertical-align: middle; 
+	width: 100%;
+	height: 100%;
+
+}
+header.top h1 img
+{
+	max-width: 333px;
+	width: 80%;
+}
+
+nav button
+{
+
+	display: inline-block;
+	width: 34%;
+
+	margin: 0px;
+	padding: 10px 0px;
+
+	background-color: #eee;
+	background: url('a.jpg');
+	background-size: 100% 100%;
+
+	border-right: 1px #ccc solid;
+	border-left: 1px #fff solid;
+	font-size: 12px;
+}
+nav.top button
+{
+	border-bottom: 1px #ccc solid;
+}
+nav.bottom button
+{
+	border-top: 1px #fff solid;
+}
+
+nav button[data-action=previous] 
+{
+	width: 33%;
+	border-left: 0px #ccc solid;
+}
+nav button[data-action=next] 
+{
+	width: 33%;
+	border-right: 0px #fff solid;
+}
+
+.radius_tl { border-radius: 5px 0 0 0 !important; }
+.radius_tr { border-radius: 0 5px 0 0 !important; }
+.radius_bl { border-radius: 0 0 0 5px !important; }
+.radius_br { border-radius: 0 0 5px 0 !important; }
+
+
+.day header
+{
+	background: url('a.jpg');
+	background-size: 100% 100%;
+
+	/*background-image: -webkit-linear-gradient( #EEE , #DDD );
+	background-image: -moz-linear-gradient( #EEE , #DDD );
+	background-image: -ms-linear-gradient( #EEE , #DDD );
+	background-image: -o-linear-gradient( #EEE , #DDD );
+	background-image: linear-gradient( #EEE , #DDD );*/
+}
+
+.day.grayed header
+{
+	color: #999;
+}
+.day ul
+{
+	list-style: none;
+	margin: 0px;
+	margin: 0px;
+	background: url('a.jpg');
+	/*background-image: -webkit-linear-gradient( #eee , #ddd );
+	background-image: -moz-linear-gradient( #eee , #ddd );
+	background-image: -ms-linear-gradient( #eee , #ddd );
+	background-image: -o-linear-gradient( #eee , #ddd );
+	background-image: linear-gradient( #eee , #ddd );
+	*/
+	background-size: 100% 100%;
+	border-top: 1px #fff solid;
+	border-bottom: 1px #ccc solid;
+
+}
+.day ul li
+{
+
+	margin: 0px 10px;
+	padding: 10px 0px;
+	border-top: 1px #fff solid;
+	border-bottom: 1px #ccc solid;
+}
+
+.event
+{
+	margin: 0px 0px;
+	border-left: 10px #ccc solid;
+	padding: 4px 4px 1px 10px;
+}
+.event:hover
+{
+	background-color: #ddd;
+}
+.event time 
+{
+	float: right;
+}
+.event header
+{
+	background: none;
+	border: 0;
+	padding: 0px;
+}
+
+
+article header 
+{
+	margin: 0px;
+	padding: 10px;
+	color: #2F3E46;
+
+	font-size: 12px;
+	border-top: 1px #fff solid;
+	border-bottom: 1px #ccc solid;
+
+}
+article header h1 { padding: 0; margin: 0; }
+
+p { font-size: 12px;  margin-bottom: 5px;}
+h3 { font-size: 16px; font-weight: bold;  margin-bottom: 5px; }
+h4 { margin-bottom: 5px; }
+
+article[data-event-type="fest"] { border-color: #F99D31 ; }
+article[data-event-type="happening"] { border-color: #9A4E9E ; }
+
+
+
+button
+{
+	cursor: hand;
+}
+
+
+input[type=text]
+{
+	border: none;
+	height: 100%;
+	width: 100%;
+	color: #fff;
+	background-color: transparent;
+}
+
+
+fieldset button
+{
+	font-size: 13px;
+	color: inherit;
+	text-shadow: inherit;
+
+	border-top: 1px rgba(255,255,255,0.15) solid;
+	border-bottom: 1px rgba(0,0,0,0.6) solid;
+
+	width: 100%;
+	text-align: left;
+	
+	margin: 0;
+	padding:  10px 5px 10px 0px;
+}
+fieldset button .circle
+{
+	vertical-align: middle;
+	display: inline-block;
+	width: 24px;
+	height: 1em;
+	position: relative;
+	background: url("circle.png") center;
+}
+
+.cat-r /* samfundsmøte og debatt */
+{
+	border-left-color: #A03033 !important; 
+}
+.cat-g /* fotball */
+{
+	border-left-color: #30A033 !important; 
+}
+.cat-y /* kultur og underholdning */
+{
+	border-left-color: #F99D31 !important; 
+}
+.cat-p /* konsert og uteliv */
+{
+	border-left-color: #9A4E9E !important; 
+}
+
+.bg_r /* samfundsm&oslash;te og debatt */
+{
+	background-color: #A03033 !important; 
+}
+.bg_g /* fotball */
+{
+	background-color: #30A033 !important; 
+}
+.bg_y /* kultur og underholdning */
+{
+	background-color: #F99D31 !important; 
+}
+.bg_p /* konsert og uteliv */
+{
+	background-color: #9A4E9E !important; 
+}
+.bg_f {
+	background-color: #333 !important; 
+}
+strong
+{
+	font-weight: bold;
+}
+
+.bullet
+{
+	color: #fff /*rgba(255,255,255,0.6)*/;
+	font-weight: bolder;
+	text-shadow: none;/* 1px -1px -1px rgba(255,255,255,0.2);*/
+	font-size: 1.0em;
+	display: inline-block;
+	float: right;
+	width: 1.0em;
+	height: 1.0em;
+	border-radius: 1.0em;
+	vertical-align: middle;
+	text-align: center;
+	padding: 0em;
+	margin: -.0em 0 .3em .6em;
+	box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
+	-moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
+}
+
+.notop, ul li:first-child
+{
+	border-top: none !important;
+}
+.nobottom, ul li:last-child
+{
+	border-bottom: none !important;
+}
+
+fieldset
+{
+	display: block;
+	margin: 0px 0px 10px;
+	padding: 10px 0px 0px;
+	border:none;
+}
+
+fieldset legend
+{
+	margin-left: -10px;
+	padding: 10px 0px 10px 10px;
+	background: rgba(1,1,1,0.2);
+	width: 100%;
+	font-variant: small-caps;
+}
+
+
+fieldset.search
+{
+	background:  url('glass.png') no-repeat 175px rgba(1,1,1,0.4);
+	border-radius: 12px;
+	/*border: 1px #444 solid;
+	*/margin: 8px 10px 8px 0px;
+	padding: 0px 30px 0px 12px;
+	height: 24px;
+};

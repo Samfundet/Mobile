@@ -4,23 +4,254 @@
 <html>
 
 <head>
+
+	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1, minimum-scale=1' name='viewport'>
-	<!--<script language="javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>-->
+
+	<title>Samfundet</title>
+
+	<script src="http://datejs.googlecode.com/files/date.js"></script>
+	<script src="http://ijp.googlecode.com/files/ijp-0.6.js"></script>
+	<script src="domdidom.js"></script>
+
 	<script language="javascript">
-		//$(document).ready(function() {
-		
+
+		function categoryToType(cat) 
+		{ 
+			return 	{
+				Film: 'f',
+				Excenteraften: 'p',
+				Teater: 'y',
+				Samfundsmøte: 'r',
+				Happening: 'r',
+				Konsert: 'p',
+				Fotballkamp: 'g',
+				DJ: 'p',
+				Quiz: 'y',
+				Temafest: 'p'
+			}[cat]; 
+		}
+
+		function getWeekAndDay(date)
+		{
+			var week_day = date.getDayOfYear() - date.last().monday().getDayOfYear();
+			//if (date.is().monday()) week_day = 0;
+			var week_nr = date.getWeekOfYear();
+			if (week_day==7) { week_day=0; week_nr+=1; }
+			var ret = {week:week_nr, day:week_day};
+			return ret;
+		}
+
+		function mondayOfWeek(week_nr)
+		{
+			var today_wd = getWeekAndDay(Date.today());
+
+			var delta_weeks = week_nr - today_wd.week;
+			var delta_days = 0 - today_wd.day;
+			var ret = Date.today();
+			ret.addDays(7 * delta_weeks + delta_days);
+			return ret;
+		}
+		function parseDatetime(datetime)
+		{
+			var v = datetime;
+			return v.substring(0,4)+"/"+v.substring(4,6)+"/"+v.substring(6,8) + " " 
+			     + v.substring(9,11) + ":" + v.substring(11,13) + ":" + v.substring(13,15); 
+		}
+
+	    function get(url, success, failure)
+	    {
+	    	var req = new XMLHttpRequest();
+	    	req.onreadystatechange = function() 
+	    	{
+				if (req.readyState == 4) 
+					success(req.responseText);
+				else
+					failure(req.responseText);
+			};
+			req.open("GET", url, true);
+			req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			req.send(null); 
+    	}
+
+
 
 		/*
-		var art = $("article.day");
-		
-			art.find("ul").hide();
-			art.click(function() { $(this).find("ul").slideToggle(); });
-		
-			var main = $(".main");
-			var top = $(".top");
-			var settings = $(".settings");
-			var settings_width = 250;
-			*/
+		HTMLElement.prototype.toggle = function()
+		{
+			if ("old_display" in this)
+			{
+				this.style.display = this.old_display;
+				delete this.old_display;
+				var counter = 0;
+				var elm = this;
+
+				elm.style.overflow = "hidden";
+				(function anim()
+				{
+					elm.style.height = counter+"px";
+					counter += 20;
+					if (counter >= elm.measureHeight())
+						elm.style.height = "";
+					else
+		                window.setTimeout(anim, 1000 / 24);
+				})();
+			}
+			else
+			{
+				var elm = this;
+				var counter = elm.measureHeight();
+
+				elm.style.overflow = "hidden";
+				(function anim()
+				{
+					elm.style.height = counter+"px";
+					counter -= 20;
+					if (counter <= 0)
+					{
+						elm.old_display = elm.style.display;
+						elm.style.display = "none";
+						elm.style.height = "";
+					}
+					else
+		                window.setTimeout(anim, 1000 / 24);
+				})();
+
+				
+			}
+		};*/
+
+		HTMLElement.prototype.toggle = function()
+		{
+			if (this.style.height == "0px")
+			{
+				this.css({height: this.measureHeight()+"px" });
+				return true;
+			}
+			else
+			{
+				this.css({height: "0px" });			
+				return false;
+			}
+		};
+
+		document.createWeek = function()
+		{
+			var week_dom = document.createElement("section");
+			week_dom.setAttribute("class", "weekview");
+
+
+			var goto_previous_week = function() {};
+			var goto_current_week = function() {};
+			var goto_next_week = function() {};
+
+
+			{
+				var nav = week_dom.appendElement("nav", { class: "top" });
+				
+				nav.appendElement("button", "Forrige uke", { 
+					"class": "radius_tl",
+					"data-action": "previous",
+				}).onclick = goto_previous_week;
+
+				nav.appendElement("button", "Uke 23").onclick = goto_current_week;
+
+				nav.appendElement("button", "Neste uke", {
+					"class": "radius_tr",
+					"data-action": "next",
+				}).onclick = goto_next_week;
+			}
+
+			var days = week_dom.appendElement("div");
+
+			{
+				var nav = week_dom.appendElement("nav", { class: "bottom" });
+				
+				nav.appendElement("button", "Forrige uke", { 
+					"class": "radius_bl",
+					"data-action": "previous",
+				}).onclick = goto_previous_week;
+
+				nav.appendElement("button", "Uke 23").onclick = goto_current_week;
+
+				nav.appendElement("button", "Neste uke", {
+					"class": "radius_br",
+					"data-action": "next",
+				}).onclick = goto_next_week;
+			}
+
+			week_dom.addDay = function(date)
+			{
+				var day = days.appendElement("article", { class: "day grayed" });
+
+				day.header = day.appendElement("header");
+				var h2 = day.header.appendElement("h2");
+				var time = h2.appendElement("time", { datetime: date });
+				time.appendElement("strong", date.toString("dddd"));
+				time.appendText(" " + date.toString("d. MMMM"));
+
+				day.eventTypes = {};
+				day.eventTypeCounts = {};
+
+				day.event_list = day.appendElement("ul", {"class":"notop nobottom"});
+
+				//day.event_list.hide();
+				
+				day.event_list.css({
+					height: "0px",
+					overflow: "hidden"
+				});
+
+				day.event_list.css3({transition: "height 0.4s ease-in-out"});
+				
+				day.header.onclick = function() 
+				{ 
+					if (day.event_list.toggle()) 
+						day.event_list.removeClass("notop nobottom"); 
+					else
+						window.setTimeout(function(){day.event_list.addClass("notop nobottom");}, 200);
+				};
+				
+				day.addEvent = function(event)
+				{
+					var type = categoryToType(event.categories[0].value);
+
+					var li = day.event_list.appendElement("li", { class: "cat-"+type });
+
+					var eventart = li.appendElement("article", { class: "event cat-"+type });
+
+					eventart.header = eventart.appendElement("header");
+					eventart.header.appendElement("time", event.date.toString("HH:mm"), { datetime: event.date });
+					eventart.header.appendElement("h3", event.summary.value);
+					eventart.header.appendElement("h4", event.categories[0].value+' i '+event.location.value);
+
+					eventart.appendElement("p", event.description.value);
+					
+					if (!(type in day.eventTypeCounts))
+					{
+						day.eventTypeCounts[type] = 1;
+						var bullet = h2.appendElement("span", "1", { class: "bullet "+"bg_"+type });
+						day.removeClass("grayed")
+						day.eventTypes[type] = bullet;
+					}
+					else
+					{
+						day.eventTypeCounts[type] += 1;
+						day.eventTypes[type].innerHTML = day.eventTypeCounts[type]; 
+					}
+					return eventart;
+				};
+				return day;
+			};
+
+
+			return week_dom;
+		};
+
+var current_week = getWeekAndDay(Date.today()).week;
+var current_year = Date.today().toString("yyyy");
+
+/*
 	 	window.requestAnimFrame = (function(){
 	      return  window.requestAnimationFrame       || 
 	              window.webkitRequestAnimationFrame || 
@@ -31,465 +262,151 @@
 	                window.setTimeout(callback, 1000 / 60);
 	              };
 	    })();
+*/
 
-	    var toggler = true;
+
+
+
+
+		cache =
+		{
+			week: {},
+			events: {},
+			clearWeek: function(weekno)
+			{
+				this.week[weekno] = [[],[],[],[],[],[],[]];
+			},
+			addEvent: function(item)
+			{
+				var wd = getWeekAndDay(item.date);
+				this.events[item.uid.value] = item;
+				if (!this.week[wd.week]) this.clearWeek(wd.week);
+				//alert("added "+item.uid.value+" on week"+wd.week+"day"+wd.day);
+				this.week[wd.week][wd.day].push(item.uid.value);
+			},
+			getDay: function(weekno, dayno)
+			{
+				//alert("fetching from week"+weekno+"day"+dayno)
+				var ret = [];
+				var w = this.week[weekno];
+				for (uid in w[dayno])
+					ret.push(this.events[w[dayno][uid]]);
+				return ret;
+			}
+		};
+
+		events = 
+	    {
+	    	fetch: function(from, to, success, failure)
+	    	{
+				var ical_base_url = "/arrangement/ical_interval";
+				var ical_url = ical_base_url+"/from/"+from.toString("yyyy/MM/dd")+"/to/"+to.toString("yyyy/MM/dd");
+				get(ical_url, function(response)
+				{
+					icalParser.parseIcal(response);
+					var events = icalParser.ical.events;
+					success(events);
+				}, function(response)
+				{
+					if (failure) failure();
+				});
+			},
+			fetchWeek: function(weekno, success, failure)
+			{
+				var from = mondayOfWeek(weekno);
+				var to = from.clone();
+				to.addDays(7);
+				this.fetch(from, to, success, failure);
+			}
+
+		}
+
+
+/*
+		updateWeekCAche()
+		{
+
+		}
+
+*/
+
+
 		function onLoad()
 		{
 			main_dom = document.getElementById("main");
+			var weekview = document.createWeek();
+			main_dom.appendChild(weekview);
 			settings_dom = document.getElementById("settings");
-		} 
+			
 
+			weekno = current_week;
+
+			events.fetchWeek(weekno, function(events)
+			{
+				cache.clearWeek(weekno);
+				for (i in events)
+				{
+					var item = events[i];
+					var datestr = parseDatetime(item.dtstart.value);
+					item.date = Date.parse(datestr);
+					item.time = item.date.toString("HH:mm");
+					cache.addEvent(item);
+				}
+
+				var date = mondayOfWeek(weekno);
+				for (i = 0; i<7; i++)
+				{
+					var day = weekview.addDay(date);
+					var events = cache.getDay(weekno, i);
+					for (e in events)
+						day.addEvent(events[e]);
+					date.addDays(1);
+				}
+
+			});
+		    settings_dom.css3({transform: "translateX(-100px)"});
+			main_dom.css3({transform: "translateX(0px)"});
+			settings_dom.css3({transition: "-webkit-transform 0.4s ease-out"});
+			main_dom.css3({transition: "-webkit-transform 0.4s ease-out"});
+		}
+
+
+	    var toggler = true;
+
+		yo = false;
 		function onClick()
 		{
 				
-			//if (toggler)
+			if (toggler)
 			{
-				settings_dom.style.webkitTransition = 'all 0.2s ease-out';
-			    settings_dom.style.webkitTransform = 'translateX(100px)';
-
-				main_dom.style.webkitTransition = 'all 0.2s ease-out';
-			    main_dom.style.webkitTransform = 'translateX(200px)';
+			    settings_dom.style.width = "215px";
+				settings_dom.css3({transform: "translateX(0px)"});
+				main_dom.css3({transform: "translateX(225px)"});
 			}
-			//else
+			else
 			{
-			//	main_dom.style.webkitTransition = 'all 0.2s ease-out';
-			//  main_dom.style.webkitTransform = 'translateX(0px)';
+			    settings_dom.css3({transform: "translateX(-100px)"});
+				main_dom.css3({transform: "translateX(0px)"});
+			    window.setTimeout(function() { 
+				    settings_dom.style.width = "0px";
+			    }, 400);
 			}
-			//toggler = !toggler;
-			/*
-			main_dom.style.left = 0 + "px"; 
-			setInterval(function anim() {
-				value += 0.1;
-				var v = Math.cos(value * Math.PI + Math.PI) * 0.5 + 0.5;
-				main_dom.style.left = v*200 + "px"; 
-				if (value > 1.0) value = 0;
-				//window.setTimeout(anim, 1000/60);
-				//window.requestAnimFrame(anim);
-			}, 1000/24);*/
+			toggler = !toggler;
 		}
-		/*
-			$("button.toggle_settings").click(function() {
-				if (settings.is(":visible"))
-				{
-					main.animate({left: "0px"});
-					top.animate({left: "0px"});
-					settings.animate({left: -settings_width/2 + "px"},  function() 
-					{
-						settings.hide();
-
-						main.css( { 
-							position: "absolute",
-							top: 0,
-						});
-						window.scrollTo(200, 0);
-					});
-				}
-				else
-				{
-
-					main.css( { 
-						position: "fixed",
-						top: -window.pageYOffset+"px", 
-					});
-					settings.css( { position: "absolute" });
-					settings.show();
-					main.animate({left: settings_width+"px"});
-					top.animate({left: settings_width+"px"});
-					settings.animate({left: "0px"});
-
-				}
-			});
-
-		});
-*/
-	</script>
-	<style type="text/css">
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-
-		.settings
-		{
-			position: fixed;
-			left: -125px;
-
-			z-index: 0;
-			clear: none;
-			
-
-			/*padding-top: 40px;
-*/
-			width: 250px;
-			/*width: 200px;
-*/
-			height: 100%;
-		}
-
-		.top
-		{
-			-webkit-transform: "translateX(0px)";
-			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-			-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-			-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-			position: fixed;
-			width: 100%;
-
-			top: 0px;
-			left: 0px;
-
-			z-index: 3;
-			display: table; 
-
-			height: 40px;
-			background: #282828;
-			vertical-align: middle;
-		}
-
-		.main
-		{
- 			-webkit-transform: "translateX(0px)";
-
-			box-shadow: 0px 0px 20px #000;
-			-moz-box-shadow: 0px 0px 20px #000;
-			-webkit-box-shadow: 0px 0px 20px #000;
-			
-			z-index: 1;
-			width: 100%;
-			min-height: 100%;
-			position: absolute;
-			background: #A03033;
-			
-		}
-		body
-		{
 		
-			font-family: Helvetica, Arial, Verdana;
-			background: #222;
-			padding: 0;
-			margin: 0;
-		}
-		section[data-type=weekview] 
-		{
-			margin: 60px 10px;
-			border-radius: 5px;
-			box-shadow: 1px 1px 20px #000;
-			-moz-box-shadow: 1px 1px 20px #000;
-			-webkit-box-shadow: 1px 1px 20px #000;
-			
-			text-shadow: 0 1px 1px #fff;
-		}
-		section[data-type=weekview] nav
-		{
+	</script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style type="text/css">
 
-		}
-
-		button
-		{
-			border: none;
-			background: none;
-		}
-
-		header.top button
-		{
-			display: table-cell; 
-
-			min-width: 40px;
-			width: 40px;
-			height: 40px;
-
-			margin: 0;
-			padding: 0;
-			
-			background: url("settings.png") center no-repeat;
-			border: none;
-			border-right: 1px #444 solid;
-
-			height: 100%;
-
-
-		}
-
-		header.top h1
-		{
-			display: table-cell; 
-			padding: 0 40px 0 0;
-			text-align: center;
-			vertical-align: middle; 
-			width: 100%;
-			height: 100%;
-
-		}
-		header.top h1 img
-		{
-			max-width: 333px;
-			width: 80%;
-		}
-
-		nav button
-		{
-			display: inline-block;
-			width: 34%;
-
-			margin: 0px;
-			padding: 10px 0px;
-
-			background-color: #eee;
-			
-
-			border-right: 1px #ccc solid;
-			border-left: 1px #fff solid;
-			border-bottom: 1px #ccc solid;
-
-			font-size: 12px;
-		}
-
-		nav button[data-action=previous] 
-		{
-			width: 33%;
-			border-left: 0px #ccc solid;
-			border-radius: 5px 0 0 0;
-		}
-		nav button[data-action=next] 
-		{
-			width: 33%;
-			border-right: 0px #fff solid;
-			border-radius: 0 5px 0 0;
-		}
-
-		.radius_bl { border-radius: 0 0 5px 0 !important; }
-		.radius_br { border-radius: 0 0 0 5px !important; }
-
-
-		article[data-type=day] header
-		{
-			background-color: #eee;
-			background-image: -webkit-linear-gradient( #EEE , #DDD );
-			background-image: -moz-linear-gradient( #EEE , #DDD );
-			background-image: -ms-linear-gradient( #EEE , #DDD );
-			background-image: -o-linear-gradient( #EEE , #DDD );
-			background-image: linear-gradient( #EEE , #DDD );
-		}
-		article[data-type=day] ul
-		{
-			list-style: none;
-			margin: 0;
-			margin: 0;
-			background-color: #eee;
-			background-image: -webkit-linear-gradient( #EEE , #DDD );
-			background-image: -moz-linear-gradient( #EEE , #DDD );
-			background-image: -ms-linear-gradient( #EEE , #DDD );
-			background-image: -o-linear-gradient( #EEE , #DDD );
-			background-image: linear-gradient( #EEE , #DDD );
-		}
-		.day ul li
-		{
-			margin: 0px 10px;
-			padding: 10px 0px;
-			border-top: 1px #fff solid;
-			border-bottom: 1px #ccc solid;
-		}
-		article[data-type=event] header
-		{
-
-
-			background: none;
-			border: 0;
-		}
-		article header 
-		{
-
-			margin: 0px;
-			padding: 10px;
-
-
-			color: #2F3E46;
-
-			font-size: 12px;
-			border-top: 1px #fff solid;
-			border-bottom: 1px #ccc solid;
-
-		}
-		article header h1 { padding: 0; margin: 0; }
-		article[data-type="event"]
-		{
-			margin: 0px 0px;
-			border-left: 10px #ccc solid;
-			padding: 4px 4px 1px 10px;
-		}
-		p { font-size: 12px;  margin-bottom: 5px;}
-		h3 { font-size: 16px; font-weight: bold;  margin-bottom: 5px; }
-		h4 { margin-bottom: 5px; }
-		article[data-type="event"]:hover
-		{
-			background-color: #ddd;
-		}
-		article[data-type="event"] header
-		{
-			padding: 0px;
-		}
-		article[data-event-type="fest"] { border-color: #F99D31 ; }
-		article[data-event-type="happening"] { border-color: #9A4E9E ; }
-
-		article[data-type="event"] time 
-		{
-			float: right;
-		}
-
-
-		.settings
-		{
-			color: #eee;
-			text-shadow: 0 -1px 1px rgba(0,0,0,1);
-			padding: 5px 10px;
-		}
-		button
-		{
-			cursor: hand;
-		}
-		fieldset button
-		{
-			color: inherit;
-			text-shadow: inherit;
-
-			border-top: 1px rgba(255,255,255,0.2) solid;
-			border-bottom: 1px rgba(0,0,0,0.6) solid;
-			/*background-image: -webkit-linear-gradient( #EEE , #DDD );
-			background-image: -moz-linear-gradient( #EEE , #DDD );
-			background-image: -ms-linear-gradient( #EEE , #DDD );
-			background-image: -o-linear-gradient( #EEE , #DDD );
-			background-image: linear-gradient( #EEE , #DDD );
-*/
-			width: 100%;
-			text-align: left;
-			
-			margin: 0;
-			padding:  10px 5px 10px 0px;
-		}
-		fieldset button .circle
-		{
-			vertical-align: middle;
-			display: inline-block;
-			width: 24px;
-			height: 1em;
-			position: relative;
-			background: url("circle.png") center;
-		}
-
-.bg_r /* samfundsm&oslash;te og debatt */
-{
-	background-color: #A03033 !important; 
-}
-.bg_g /* fotball */
-{
-	background-color: #30A033 !important; 
-}
-.bg_y /* kultur og underholdning */
-{
-	background-color: #F99D31 !important; 
-}
-.bg_p /* konsert og uteliv */
-{
-	background-color: #9A4E9E !important; 
-}
-.bg_f {
-		background-color: #333 !important; 
-}
-	strong
-	{
-		font-weight: bold;
-	}
-
-	.bullet
-	{
-		color: rgba(255,255,255,0.8);
-		font-weight: bold;
-		text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
-		font-size: .6em;
-		display: inline-block;
-		float: right;
-		width: 1.0em;
-		height: 1.0em;
-		border-radius: 50%;
-		vertical-align: middle;
-		text-align: center;
-		padding: .3em;
-		margin: -.0em 0 .3em .6em;
-		box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
-		-moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
-		-webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
-	}
-
-		.notop
-		{
-			border-top: none !important;
-		}
-		.nobottom
-		{
-			border-bottom: none !important;
-		}
-
-		fieldset
-		{
-			margin: 10px 0px 10px;
-			padding: 10px 0px 0px;
-			border:none;
-		}
-
-		fieldset legend
-		{
-			margin-left: -10px;
-			padding: 10px 0px 10px 10px;
-			background: rgba(1,1,1,0.2);
-			width: 100%;
-			font-variant: small-caps;
-		}
 	</style>
 </head>
-<body onload="onLoad()" onclick="onClick()">
+<body onload="onLoad()" >
 
 
 <section class="settings" id="settings">
+	<fieldset class="search">
+		<input type="text" placeholder="Søk i arrangementer">
+	</fieldset>	
 	<fieldset>
 		<legend >Vis kategorier</legend>
 		<button class="notop">
@@ -517,366 +434,10 @@ table {
 <section class="main" id="main">
 
 <header class="top">
-	<button class="toggle_settings">&nbsp;</button>
+	<button class="toggle_settings" onclick="onClick();">&nbsp;</button>
 	<h1><img src="http://www.samfundet.no/public/mobile-old/logo.png" alt="Samfundet"></h1>
 </header>
 
-<section data-type="weekview">
-	<nav>
-		<button data-action="previous">Forrige uke</button><button>Uke 23</command><button data-action="next">Neste uke</button>
-	</nav>
-	<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-	
-
-
-
-
-	<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-		<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-		<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-		<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-		<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-		<article data-type="day" class="day">
-		<header>
-			<h2>
-				<time datetime="2012-08-27"><strong>Mandag</strong> 27. August</time>
-				<span class="bullet bg_p" data-event-type="fest">2</span>
-				<span class="bullet bg_y" data-event-type="happening">1</span>
-				<span class="bullet bg_r" data-event-type="happening">1</span>
-			</h2>
-		</header>
-		<ul>
-		<li class="notop">
-			<article data-type="event" data-event-type="fest">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<section>
-					<p>Dette blir et morsomt arrangement!</p>
-					<p>Husk badet&oslash;y.</p>
-				</summary>
-			</article>
-		</li>
-		<li >
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-		<li  class="nobottom">
-			<article data-type="event" data-event-type="happening">
-				<header>
-					<time datetime="2012-08-27 19:00">19:00</time>
-					<h3>Superfest</h3>
-					<h4>Happening i storsalen</h4>
-				</header>
-				<summary>
-					<p>Dette blir et morsomt arrangement!</p>
-				</summary>
-			</article>
-		</li>
-	</ul>
-	</article>
-	<nav>
-		<button class="radius_br" data-action="previous">Forrige uke</button><button>Uke 23</command><button class="radius_bl" data-action="next">Neste uke</button>
-	</nav>
-</section>
 </section>
 </body>
 </html>
