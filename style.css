@@ -263,7 +263,7 @@ nav button[data-action=next]
 }
 .event:hover
 {
-	background-color: #ddd;
+	background-color: #ddd !important;
 }
 .event time 
 {
@@ -337,9 +337,16 @@ fieldset button .circle
 	width: 24px;
 	height: 1em;
 	position: relative;
-	background: url("circle.png") center;
+	background: url("circle.png") center rgba(255,255,255,0.15);
 }
 
+
+article.cat-f /* film ! */
+{
+	border-left: none !important;
+	padding-left: 20px !important;
+	background: url("film.png") repeat-y !important;
+}
 .cat-r /* samfundsmøte og debatt */
 {
 	border-left-color: #A03033 !important; 
@@ -357,25 +364,26 @@ fieldset button .circle
 	border-left-color: #9A4E9E !important; 
 }
 
-.bg_r /* samfundsm&oslash;te og debatt */
+.bg_r, .c_r .circle /* samfundsm&oslash;te og debatt */
 {
 	background-color: #A03033 !important; 
 }
-.bg_g /* fotball */
+.bg_g, .c_g .circle /* fotball */
 {
 	background-color: #30A033 !important; 
 }
-.bg_y /* kultur og underholdning */
+.bg_y, .c_y .circle /* kultur og underholdning */
 {
 	background-color: #F99D31 !important; 
 }
-.bg_p /* konsert og uteliv */
+.bg_p, .c_p .circle /* konsert og uteliv */
 {
 	background-color: #9A4E9E !important; 
 }
-.bg_f {
-	background-color: #333 !important; 
+.bg_f, .c_f .circle {
+	background-color: #aaa !important; 
 }
+
 strong
 {
 	font-weight: bold;
@@ -400,14 +408,60 @@ strong
 	-moz-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
 	-webkit-box-shadow: 0 -1px 1px rgba(0,0,0,0.6);
 }
+.toggled .circle 
+{
+	/*background: none;*/
+}
+.toggled
+{
+	/*border-left: rgba(255,255,255,0.2) 1px solid;
+	margin-left: -1px;*/
+}
 
-.notop, ul li:first-child
+
+.notop, ul li:first-child, #cats button:first-child, #results li:first-child
 {
 	border-top: none !important;
 }
-.nobottom, ul li:last-child
+.nobottom, ul li:last-child, #cats button:last-child, #results li:last-child
 {
 	border-bottom: none !important;
+}
+
+.fullwidth
+{
+	width: 100% !important;
+	padding-right: 0px !important;
+	padding-left: 0px !important;
+}
+.fullwidth fieldset
+{
+	margin-left: 10px !important;
+}
+.hidden
+{
+	display: none;
+}
+
+#results
+{
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin-top: 40px;
+	color: #fff;
+	z-index: 999;
+	background-color: #444 !important;
+}
+
+#results li
+{
+	margin: 0px 22px !important;
+	padding: 10px 0px ;
+	display: block;
+	border-top: 1px rgba(255,255,255,0.15) solid;
+	border-bottom: 1px rgba(0,0,0,0.6) solid;
 }
 
 fieldset
@@ -430,7 +484,7 @@ fieldset legend
 
 fieldset.search
 {
-	background:  url('glass.png') no-repeat 175px rgba(1,1,1,0.4);
+	background:  url('glass.png') no-repeat right rgba(1,1,1,0.4);
 	border-radius: 12px;
 	/*border: 1px #444 solid;
 	*/margin: 8px 10px 8px 0px;

@@ -1,3 +1,10 @@
+//
+// Usage: 
+// dom.appendElement("h1", "Hei", {"class": "minklasse"});
+// dom.appendElement("h1", "Hei");
+// dom.appendElement("h1", {"class": "minklasse"});
+//
+
 HTMLElement.prototype.appendElement = function (elmtype, html_or_attribs, attribs)
 {
 	var elm = document.createElement(elmtype);
@@ -17,9 +24,12 @@ HTMLElement.prototype.appendElement = function (elmtype, html_or_attribs, attrib
 HTMLElement.prototype.addClass = function(klass)
 {
 	var oldclass = this.getAttribute("class");
-	if (oldclass && oldclass.indexOf(klass) != -1)
-		this.setAttribute("class", oldclass + " " + klass);
-	else
+	if (oldclass)
+	{
+		if (oldclass.indexOf(klass) == -1)
+			this.setAttribute("class", oldclass + " " + klass);
+	}
+	else 
 		this.setAttribute("class", klass);
 };
 HTMLElement.prototype.removeClass = function(klass)
@@ -27,6 +37,24 @@ HTMLElement.prototype.removeClass = function(klass)
 	var oldclass = this.getAttribute("class");
 	if (oldclass && oldclass.indexOf(klass) != -1)
 		this.setAttribute("class", oldclass.replace(klass, ""));
+};
+HTMLElement.prototype.hasClass = function(klass)
+{
+	var oldclass = this.getAttribute("class");
+	return (oldclass && oldclass.indexOf(klass) != -1);
+};
+HTMLElement.prototype.toggleClass = function(klass)
+{
+	if (this.hasClass(klass))
+	{
+		this.removeClass(klass);
+		return false;
+	}
+	else
+	{
+		this.addClass(klass);		
+		return true;
+	}
 };
 HTMLElement.prototype.css3 = function(map)
 {
@@ -40,6 +68,7 @@ HTMLElement.prototype.css3 = function(map)
 	    this.style["o"+upperish(key)] =  map[key];
 	    this.style["ms"+upperish(key)] =  map[key];
 	    this.style["webkit"+upperish(key)] = map[key];
+	    this.style["moz"+upperish(key)] = map[key];
 	}
 }
 

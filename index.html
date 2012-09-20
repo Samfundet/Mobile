@@ -10,7 +10,10 @@
 
 	<title>Samfundet</title>
 
-	<script src="http://datejs.googlecode.com/files/date.js"></script>
+	<!--<script src="http://datejs.googlecode.com/files/date.js"></script>
+	<script src="date-no-NO.js"></script>-->
+	<script type="text/javascript" src="date.js"></script>
+	<script type="text/javascript" src="date-no-NO.js"></script>
 	<script src="http://ijp.googlecode.com/files/ijp-0.6.js"></script>
 	<script src="domdidom.js"></script>
 
@@ -32,12 +35,28 @@
 			}[cat]; 
 		}
 
+		type_to_name = 
+		{
+			p: "Konsert og Uteliv",
+			y: "Kultur og Underholdning",
+			r: "Samfundsmøte og debatt",
+			f: "Film",
+			g: "Fotball og Sport"
+		};
+
+
 		function getWeekAndDay(date)
 		{
-			var week_day = date.getDayOfYear() - date.last().monday().getDayOfYear();
+			var week_day = date.getDay() - 1; //getDayOfYear() - date.last().monday().getDayOfYear();
 			//if (date.is().monday()) week_day = 0;
 			var week_nr = date.getWeekOfYear();
-			if (week_day==7) { week_day=0; week_nr+=1; }
+			if (week_day == -1) 
+			{ 
+				week_day = 6;
+				week_nr -= 1;
+			}
+
+			//if (week_day==7) { week_day=0; week_nr+=1; }
 			var ret = {week:week_nr, day:week_day};
 			return ret;
 		}
@@ -52,11 +71,14 @@
 			ret.addDays(7 * delta_weeks + delta_days);
 			return ret;
 		}
+
 		function parseDatetime(datetime)
 		{
+			//"yyyy-MM-dd HH:mm:ssZ",
+			//return datetime;
 			var v = datetime;
-			return v.substring(0,4)+"/"+v.substring(4,6)+"/"+v.substring(6,8) + " " 
-			     + v.substring(9,11) + ":" + v.substring(11,13) + ":" + v.substring(13,15); 
+			return v.substring(0,4)+"-"+v.substring(4,6)+"-"+v.substring(6,8) + " " 
+			     + v.substring(9,11) + ":" + v.substring(11,13) + ":" + v.substring(13,15) + ""; 
 		}
 
 	    function get(url, success, failure)
@@ -135,51 +157,62 @@
 			}
 		};
 
+
+		var current_week = getWeekAndDay(Date.today()).week;
+		var current_year = Date.today().toString("yyyy");
+
 		document.createWeek = function()
 		{
 			var week_dom = document.createElement("section");
 			week_dom.setAttribute("class", "weekview");
 
+			week_dom.next = function() { };
+			week_dom.previous = function() { };
+			week_dom.current = function() { };
 
-			var goto_previous_week = function() {};
-			var goto_current_week = function() {};
-			var goto_next_week = function() {};
 
-
-			{
-				var nav = week_dom.appendElement("nav", { class: "top" });
+				var nava = week_dom.appendElement("nav", { class: "top" });
 				
-				nav.appendElement("button", "Forrige uke", { 
+				nava.appendElement("button", "Forrige uke", { 
 					"class": "radius_tl",
 					"data-action": "previous",
-				}).onclick = goto_previous_week;
+				}).onclick =function() {  week_dom.previous(); };
 
-				nav.appendElement("button", "Uke 23").onclick = goto_current_week;
+			var	weeka = nava.appendElement("button", "Uke 23");
+			weeka.onclick = function() { week_dom.current(); };
 
-				nav.appendElement("button", "Neste uke", {
+				nava.appendElement("button", "Neste uke", {
 					"class": "radius_tr",
 					"data-action": "next",
-				}).onclick = goto_next_week;
-			}
-
+				}).onclick = function() { week_dom.next(); };
+			
 			var days = week_dom.appendElement("div");
 
-			{
-				var nav = week_dom.appendElement("nav", { class: "bottom" });
+				var navb = week_dom.appendElement("nav", { class: "bottom" });
 				
-				nav.appendElement("button", "Forrige uke", { 
+				navb.appendElement("button", "Forrige uke", { 
 					"class": "radius_bl",
 					"data-action": "previous",
-				}).onclick = goto_previous_week;
+				}).onclick = function() { week_dom.previous() };
 
-				nav.appendElement("button", "Uke 23").onclick = goto_current_week;
+			var	weekb = navb.appendElement("button", "Uke 23");
+			weekb.onclick =  function() { week_dom.current() };
 
-				nav.appendElement("button", "Neste uke", {
-					"class": "radius_br",
-					"data-action": "next",
-				}).onclick = goto_next_week;
+			navb.appendElement("button", "Neste uke", {
+				"class": "radius_br",
+				"data-action": "next",
+			}).onclick = function() { week_dom.next(); };
+
+			week_dom.setCurrentWeek = function(weekno)
+			{
+				weekb.innerHTML = "Uke "+ weekno;
+				weeka.innerHTML = "Uke "+ weekno;	
 			}
 
+			week_dom.clearDays = function()
+			{
+				days.innerHTML = "";
+			}
 			week_dom.addDay = function(date)
 			{
 				var day = days.appendElement("article", { class: "day grayed" });
@@ -244,25 +277,13 @@
 				return day;
 			};
 
-
 			return week_dom;
 		};
 
-var current_week = getWeekAndDay(Date.today()).week;
-var current_year = Date.today().toString("yyyy");
 
-/*
-	 	window.requestAnimFrame = (function(){
-	      return  window.requestAnimationFrame       || 
-	              window.webkitRequestAnimationFrame || 
-	              window.mozRequestAnimationFrame    || 
-	              window.oRequestAnimationFrame      || 
-	              window.msRequestAnimationFrame     || 
-	              function( callback ){
-	                window.setTimeout(callback, 1000 / 60);
-	              };
-	    })();
-*/
+
+
+
 
 
 
@@ -314,6 +335,7 @@ var current_year = Date.today().toString("yyyy");
 			fetchWeek: function(weekno, success, failure)
 			{
 				var from = mondayOfWeek(weekno);
+				//alert(from);
 				var to = from.clone();
 				to.addDays(7);
 				this.fetch(from, to, success, failure);
@@ -321,26 +343,48 @@ var current_year = Date.today().toString("yyyy");
 
 		}
 
-
-/*
-		updateWeekCAche()
+		HTMLElement.prototype.appendToggleButton = function(text, toggled_class, value)
 		{
+			var btn = this.appendElement("button");
+			
+			btn.appendElement("span", {"class": "circle"});
+			if (value) btn.addClass(toggled_class);
 
+			btn.toggled = function() {};
+			btn.untoggled = function() {};
+			btn.onclick = function()
+			{
+				if (btn.toggleClass(toggled_class))
+					btn.toggled();
+				else
+					btn.untoggled();
+			};
+	
+			btn.appendText(text);
+			return btn;
+		};
+
+
+		function showWeek(weekview, weekno)
+		{
+			weekview.clearDays();
+			var date = mondayOfWeek(weekno);
+			for (i = 0; i<7; i++)
+			{
+				var day = weekview.addDay(date);
+				var events = cache.getDay(weekno, i);
+				for (e in events)
+					day.addEvent(events[e]);
+				date.addDays(1);
+			}
+			weekview.setCurrentWeek(weekno);
+			weekview.next = function() { fetchAndShow(weekview, weekno+1); };
+			weekview.previous = function() { fetchAndShow(weekview, weekno-1); };
 		}
 
-*/
 
-
-		function onLoad()
+		function fetchAndShow(weekview, weekno)
 		{
-			main_dom = document.getElementById("main");
-			var weekview = document.createWeek();
-			main_dom.appendChild(weekview);
-			settings_dom = document.getElementById("settings");
-			
-
-			weekno = current_week;
-
 			events.fetchWeek(weekno, function(events)
 			{
 				cache.clearWeek(weekno);
@@ -349,25 +393,74 @@ var current_year = Date.today().toString("yyyy");
 					var item = events[i];
 					var datestr = parseDatetime(item.dtstart.value);
 					item.date = Date.parse(datestr);
+					// look, a three headed monkey!
+					item.date.addHours(Date.today().getUTCOffset().substring(1,3));
 					item.time = item.date.toString("HH:mm");
 					cache.addEvent(item);
 				}
-
-				var date = mondayOfWeek(weekno);
-				for (i = 0; i<7; i++)
-				{
-					var day = weekview.addDay(date);
-					var events = cache.getDay(weekno, i);
-					for (e in events)
-						day.addEvent(events[e]);
-					date.addDays(1);
-				}
-
+				showWeek(weekview, weekno);
 			});
+		}
+
+		function onLoad()
+		{
+			main_dom = document.getElementById("main");
+			var weekview = document.createWeek();
+			main_dom.appendChild(weekview);
+			settings_dom = document.getElementById("settings");
+			
+			cats_dom = document.getElementById("cats");
+
+			for (c in type_to_name)
+			{
+				(function(c)
+				{
+					var cat = c;
+					var name = type_to_name[cat];
+					var btn = cats_dom.appendToggleButton(name, "toggled c_"+cat, true);
+
+				})(c);
+			}
+
+			fetchAndShow(weekview, current_week);
+
+
+
 		    settings_dom.css3({transform: "translateX(-100px)"});
 			main_dom.css3({transform: "translateX(0px)"});
 			settings_dom.css3({transition: "-webkit-transform 0.4s ease-out"});
 			main_dom.css3({transition: "-webkit-transform 0.4s ease-out"});
+		
+			var body_dom = document.getElementById("body");
+
+			var search_dom = document.getElementById("search");
+			var results_dom = document.getElementById("results");
+			search_dom.onfocus = function()
+			{
+				results_dom.css({display:"block"});
+				settings_dom.addClass("fullwidth");
+				main_dom.addClass("hidden");
+			};
+			search_dom.onblur = function()
+			{
+				results_dom.css({display:"none"});
+				settings_dom.removeClass("fullwidth");
+				main_dom.removeClass("hidden");
+			};
+
+			search_dom.onkeyup = function()
+			{
+				results_dom.innerHTML = "";
+				if (search_dom.value.length >= 3)
+				{
+					search_dom.onfocus();
+					var results = search(search_dom.value);
+					for (r in results)
+						results_dom.appendElement("li", results[r].summary.value);
+				}
+				else if (search_dom.value.length == 0)
+					search_dom.onblur();
+			};
 		}
 
 
@@ -393,6 +486,28 @@ var current_year = Date.today().toString("yyyy");
 			}
 			toggler = !toggler;
 		}
+
+		function dummyEvent()
+		{
+			return {
+				categories: [{value: "r"}],
+				date: new Date(),
+				summary: {value: "Navn på eventen"},
+				location: {value: "Storsalen"},
+				description: {value: "Kort beskrivelse"},
+			};
+		}
+		function search(text)
+		{
+			var ret = [];
+			if (text.length < 4) ret.push(dummyEvent());
+			if (text.length < 5) ret.push(dummyEvent());
+			if (text.length < 7) ret.push(dummyEvent());
+			if (text.length < 8) ret.push(dummyEvent());
+			return ret;
+		}
+
+
 		
 	</script>
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -400,34 +515,22 @@ var current_year = Date.today().toString("yyyy");
 
 	</style>
 </head>
-<body onload="onLoad()" >
+<body onload="onLoad()" id="body" >
 
-
+<ul id="results">
+</ul>
 <section class="settings" id="settings">
 	<fieldset class="search">
-		<input type="text" placeholder="Søk i arrangementer">
+		<input id="search" type="text" placeholder="Søk i arrangementer">
 	</fieldset>	
 	<fieldset>
-		<legend >Vis kategorier</legend>
-		<button class="notop">
-			<span class="circle bg_p"></span>
-			Konsert og Uteliv</button>
-		<button>
-			<span class="circle bg_y"></span>
-			Kultur og Underholdning</button>
-		<button>
-			<span class="circle bg_r"></span>
-			Samfundsm&oslash;te og Debatt</button>
-		<button>
-			<span class="circle bg_y"></span>
-			Film</button>
-		<button class="nobottom ">
-			<span class="circle bg_g"></span> Fotball og Sport</button>
+		<legend>Vis kategorier</legend>
+		<div id="cats"></div>
 	</fieldset>
 	<fieldset>
 		<legend>Preferanser</legend>
-		<button class="notop notop"><span class="circle bg_f"></span>Fancy effekter</button>
-		<button class="nobottom nobottom"><span class="circle bg_f"></span>Bruk mobilversjon</button>
+		<button class="notop notop"><span class="circle"></span>Alternativ A</button>
+		<button class="nobottom nobottom"><span class="circle"></span>Alternativ B</button>
 	</fieldset>
 </section>
 
