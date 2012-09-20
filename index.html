@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="date-no-NO.js"></script>
 	<script type="text/javascript" src="http://ijp.googlecode.com/files/ijp-0.6.js"></script>
 	<script type="text/javascript" src="domdidom.js"></script>
+	<script type="text/javascript" src="events.js"></script>
 	<script type="text/javascript" src="weekview.js"></script>
 	<script language="javascript">
 
@@ -97,8 +98,6 @@
     	}
 
 
-
-
 		HTMLElement.prototype.toggle = function()
 		{
 			if (this.style.height == "0px")
@@ -117,63 +116,7 @@
 		var current_week = getWeekAndDay(Date.today()).week;
 		var current_year = Date.today().toString("yyyy");
 
-
-
-
-
-		cache =
-		{
-			week: {},
-			events: {},
-			clearWeek: function(weekno)
-			{
-				this.week[weekno] = [[],[],[],[],[],[],[]];
-			},
-			addEvent: function(item)
-			{
-				var wd = getWeekAndDay(item.date);
-				this.events[item.uid.value] = item;
-				if (!this.week[wd.week])
-					this.clearWeek(wd.week);
-				this.week[wd.week][wd.day].push(item.uid.value);
-			},
-			getDay: function(weekno, dayno)
-			{
-				var ret = [];
-				var w = this.week[weekno];
-				for (uid in w[dayno])
-					ret.push(this.events[w[dayno][uid]]);
-				return ret;
-			}
-		};
-
-		events = 
-	    {
-	    	fetch: function(from, to, success, failure)
-	    	{
-				var ical_base_url = "/arrangement/ical_interval";
-				var ical_url = ical_base_url+"/from/"+from.toString("yyyy/MM/dd")+"/to/"+to.toString("yyyy/MM/dd");
-				get(ical_url, function(response)
-				{
-					icalParser.ical.events = [];
-					icalParser.parseIcal(response);
-					var events = icalParser.ical.events;
-					success(events);
-				}, function(response)
-				{
-					if (failure) failure();
-				});
-			},
-			fetchWeek: function(weekno, success, failure)
-			{
-				var from = mondayOfWeek(weekno);
-				//alert(from);
-				var to = from.clone();
-				to.addDays(7);
-				this.fetch(from, to, success, failure);
-			}
-
-		}
+		
 
 		HTMLElement.prototype.appendToggleButton = function(text, toggled_class, value)
 		{
@@ -345,8 +288,6 @@
 			return ret;
 		}
 
-
-		
 	</script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<style type="text/css">
