@@ -239,6 +239,12 @@
 			main_dom = document.getElementById("main");
 			var weekview = document.createWeek();
 			main_dom.appendChild(weekview);
+			main_dom.appendElement("a", "Legg til i kalender", {
+				"href": "/arrangement/ical",
+				"class": "button"
+			});
+			
+
 			settings_dom = document.getElementById("settings");
 			
 			cats_dom = document.getElementById("cats");
@@ -372,6 +378,7 @@
 	<button class="toggle_settings" onclick="onClick();">&nbsp;</button>
 	<h1><img src="http://www.samfundet.no/public/mobile-old/logo.png" alt="Samfundet"></h1>
 </header>
+
 
 </section>
 </body>
