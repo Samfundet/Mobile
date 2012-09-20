@@ -155,6 +155,7 @@
 			weekview.setCurrentWeek(weekno);
 			weekview.next = function() { fetchAndShow(weekview, weekno+1); };
 			weekview.previous = function() { fetchAndShow(weekview, weekno-1); };
+			weekview.current = function() { fetchAndShow(weekview, current_week);};
 		}
 
 
