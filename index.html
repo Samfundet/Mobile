@@ -159,7 +159,7 @@
 		}
 
 
-		function fetchAndShow(weekview, weekno)
+		function fetchAndShow(weekview, weekno, callback)
 		{
 			events.fetchWeek(weekno, function(events)
 			{
@@ -175,6 +175,7 @@
 					cache.addEvent(item);
 				}
 				showWeek(weekview, weekno);
+				if (callback) callback();
 			});
 		}
 
@@ -204,7 +205,7 @@
 				})(c);
 			}
 
-			fetchAndShow(weekview, current_week);
+			fetchAndShow(weekview, current_week, function() {document.getElementById("today").onclick();});
 
 
 

@@ -54,6 +54,8 @@ document.createWeek = function()
 	{
 		var day = days.appendElement("article", "", { class: "day grayed" });
 
+
+
 		day.header = day.appendElement("header");
 		var h2 = day.header.appendElement("h2");
 		var time = h2.appendElement("time", { datetime: date });
@@ -81,6 +83,8 @@ document.createWeek = function()
 			else
 				window.setTimeout(function(){day.event_list.addClass("notop nobottom");}, 200);
 		};
+		if (date.toString("ddMMyyyy") == Date.today().toString("ddMMyyyy"))
+			day.header.setAttribute("id", "today");
 		
 		day.addEvent = function(event)
 		{
