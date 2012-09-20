@@ -215,7 +215,7 @@
 			}
 			week_dom.addDay = function(date)
 			{
-				var day = days.appendElement("article", { class: "day grayed" });
+				var day = days.appendElement("article", "", { class: "day grayed" });
 
 				day.header = day.appendElement("header");
 				var h2 = day.header.appendElement("h2");
@@ -249,7 +249,7 @@
 				{
 					var type = categoryToType(event.categories[0].value);
 
-					var li = day.event_list.appendElement("li", { class: "cat-"+type });
+					var li = this.event_list.appendElement("li", { class: "cat-"+type });
 
 					var eventart = li.appendElement("article", { class: "event cat-"+type });
 
@@ -301,13 +301,12 @@
 			{
 				var wd = getWeekAndDay(item.date);
 				this.events[item.uid.value] = item;
-				if (!this.week[wd.week]) this.clearWeek(wd.week);
-				//alert("added "+item.uid.value+" on week"+wd.week+"day"+wd.day);
+				if (!this.week[wd.week])
+					this.clearWeek(wd.week);
 				this.week[wd.week][wd.day].push(item.uid.value);
 			},
 			getDay: function(weekno, dayno)
 			{
-				//alert("fetching from week"+weekno+"day"+dayno)
 				var ret = [];
 				var w = this.week[weekno];
 				for (uid in w[dayno])
@@ -324,6 +323,7 @@
 				var ical_url = ical_base_url+"/from/"+from.toString("yyyy/MM/dd")+"/to/"+to.toString("yyyy/MM/dd");
 				get(ical_url, function(response)
 				{
+					icalParser.ical.events = [];
 					icalParser.parseIcal(response);
 					var events = icalParser.ical.events;
 					success(events);
