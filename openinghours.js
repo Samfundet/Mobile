@@ -19,7 +19,7 @@ OpeningHours =
 			"Daglighallen": 
 			{
 				"from": Date.parse(date.toString("dd-MM-yyyy")+" 20:00:00"),
-				"to": Date.parse(date.addDays(1).toString("dd-MM-yyyy")+" 00:00:00")
+				"to": Date.parse(date.clone().addDays(1).toString("dd-MM-yyyy")+" 00:00:00")
 			},
 			"Biblioteket": 
 			{
