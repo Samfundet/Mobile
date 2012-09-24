@@ -83,7 +83,17 @@ HTMLElement.prototype.appendText = function (text)
 {
 	this.appendChild(document.createTextNode(text));
 };
-
+HTMLElement.prototype.measureWidth = function()
+{
+	var origOverflow = this.style.overflow;
+	var origHeight = this.style.height;
+	this.style.overflow = "";
+	this.style.height = "";
+	var height = this.offsetWidth;
+	this.style.height = origHeight;
+	this.style.overflow = origOverflow;
+	return height;
+};
 
 HTMLElement.prototype.measureHeight = function()
 {

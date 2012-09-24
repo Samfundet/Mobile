@@ -26,6 +26,10 @@ cache =
 
 events = 
 {
+	details: function(eventid)
+	{
+		return cache.events[eventid];
+	},
 	fetch: function(from, to, success, failure)
 	{
 		var ical_base_url = "/arrangement/ical_interval";

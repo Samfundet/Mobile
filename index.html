@@ -142,6 +142,7 @@
 		};
 
 
+
 		function showWeek(weekview, weekno)
 		{
 			weekview.clearDays();
@@ -246,6 +247,12 @@
 				else if (search_dom.value.length == 0)
 					search_dom.onblur();
 			};
+
+			weekview.showDetails = function(id)
+			{
+				weekview.hide();
+			};
+
 		}
 
 

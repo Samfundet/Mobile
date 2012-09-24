@@ -6,7 +6,16 @@ document.createWeek = function()
 	week_dom.next = function() { };
 	week_dom.previous = function() { };
 	week_dom.current = function() { };
+	week_dom.showDetails = function() { };
 
+	week_dom.hide = function() 
+	{
+		week_dom.css3({"transition": "all 0.4s"});
+		week_dom.css3({"transform": "translateX(-"+(week_dom.measureWidth()+20)+"px)"});
+		setTimeout(function() {
+			week_dom.css({display: "none"});
+		}, 400);
+	}
 
 	var nava = week_dom.appendElement("nav", { class: "top" });
 	
@@ -53,8 +62,6 @@ document.createWeek = function()
 	week_dom.addDay = function(date)
 	{
 		var day = days.appendElement("article", "", { class: "day" }); // grayed
-
-
 
 		day.header = day.appendElement("header");
 		var h2 = day.header.appendElement("h2");
@@ -108,6 +115,13 @@ document.createWeek = function()
 			var type = categoryToType(event.categories[0].value);
 
 			var li = this.event_list.appendElement("li", { class: "cat-"+type });
+
+			li.onclick = function() 
+			{
+				var parts = event.url.value.split("/");
+				var id = parts[parts.length-1];
+				week_dom.showDetails(id);
+			};
 
 			var eventart = li.appendElement("article", { class: "event cat-"+type });
 
