@@ -52,23 +52,43 @@ document.createWeek = function()
 	}
 	week_dom.addDay = function(date)
 	{
-		var day = days.appendElement("article", "", { class: "day grayed" });
+		var day = days.appendElement("article", "", { class: "day" }); // grayed
 
 
 
 		day.header = day.appendElement("header");
 		var h2 = day.header.appendElement("h2");
 		var time = h2.appendElement("time", { datetime: date });
-		time.appendElement("strong", date.toString("dddd"));
-		time.appendText(" " + date.toString("d. MMMM"));
+		
+
+		if (date.toString("ddMMyyyy") == Date.today().toString("ddMMyyyy"))
+		{
+			time.appendElement("strong", "I dag");
+			time.appendText(" ( " + date.toString("dddd") + " " + date.toString("d. MMMM")+" )");
+			day.header.setAttribute("id", "today");
+
+		}
+		else
+		{
+			time.appendElement("strong", date.toString("dddd"));
+			time.appendText(" " + date.toString("d. MMMM"));
+		}
 
 		day.eventTypes = {};
 		day.eventTypeCounts = {};
 
 		day.event_list = day.appendElement("ul", {"class":"notop nobottom"});
+	
+		var dl = day.event_list.appendElement("li").appendElement("dl");
+		dl.appendElement("dt", "Edgar");
+		dl.appendElement("dd", "16:00 – 23:00");
+		dl.appendElement("dt", "Lyche");
+		dl.appendElement("dd", "16:00 – 23:00");
+		dl.appendElement("dt", "Daglighallen");
+		dl.appendElement("dd", "20:00 – 24:00");
+		dl.appendElement("dt", "Biblioteket");
+		dl.appendElement("dd", "17:00 – 22:00");
 
-		//day.event_list.hide();
-		
 		day.event_list.css({
 			height: "0px",
 			overflow: "hidden"
@@ -83,8 +103,7 @@ document.createWeek = function()
 			else
 				window.setTimeout(function(){day.event_list.addClass("notop nobottom");}, 200);
 		};
-		if (date.toString("ddMMyyyy") == Date.today().toString("ddMMyyyy"))
-			day.header.setAttribute("id", "today");
+
 		
 		day.addEvent = function(event)
 		{
@@ -105,7 +124,7 @@ document.createWeek = function()
 			{
 				day.eventTypeCounts[type] = 1;
 				var bullet = h2.appendElement("span", "1", { class: "bullet "+"bg_"+type });
-				day.removeClass("grayed")
+				//day.removeClass("grayed")
 				day.eventTypes[type] = bullet;
 			}
 			else
