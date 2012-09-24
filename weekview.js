@@ -80,14 +80,12 @@ document.createWeek = function()
 		day.event_list = day.appendElement("ul", {"class":"notop nobottom"});
 	
 		var dl = day.event_list.appendElement("li").appendElement("dl");
-		dl.appendElement("dt", "Edgar");
-		dl.appendElement("dd", "16:00 – 23:00");
-		dl.appendElement("dt", "Lyche");
-		dl.appendElement("dd", "16:00 – 23:00");
-		dl.appendElement("dt", "Daglighallen");
-		dl.appendElement("dd", "20:00 – 24:00");
-		dl.appendElement("dt", "Biblioteket");
-		dl.appendElement("dd", "17:00 – 22:00");
+		var hours = OpeningHours.forDate(date);
+		for (area in hours)
+		{
+			dl.appendElement("dt", area);
+			dl.appendElement("dd",  hours[area].from.toString("HH:mm") + " - " + hours[area].to.toString("hh:mm"));
+		}
 
 		day.event_list.css({
 			height: "0px",
