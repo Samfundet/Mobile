@@ -189,11 +189,7 @@
 			main_dom = document.getElementById("front");
 			var weekview = document.createWeek();
 			main_dom.appendChild(weekview);
-			main_dom.appendElement("a", "Legg til i kalender", {
-				"href": "/arrangement/ical",
-				"class": "button"
-			});
-			
+
 
 			get("/gjenger", function(response)
 			{

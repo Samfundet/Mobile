@@ -72,9 +72,10 @@ border-spacing: 0;
 header.top
 {
 	/*-webkit-transform: translateX(0px);
-	*/box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	*/
+	box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
 	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
 	width: 100%;
 
 	top: 0px;
@@ -87,7 +88,7 @@ header.top
 	background: #282828;
 	vertical-align: middle;
 
-	
+
 }
 
 .main
@@ -189,8 +190,11 @@ header.top h1 img
 	border-left: 1px #fff solid;
 	font-size: 12px;
 }
-.weekview nav.top > button
+.weekview .top 
 {
+	background: #e8e8e8 url('http://www.samfundet.no/public/img/hvaskaldu.gif') no-repeat right; 
+	height: 80px;
+	border-top: 1px #fff solid;
 	border-bottom: 1px #ccc solid;
 }
 .weekview nav.bottom > button
@@ -549,7 +553,14 @@ button
 }
 .tabs > nav
 {
-	background-color:  #4b1618;
+-moz-box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+-webkit-box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+box-shadow: inner 0 0 15px rgba(0,0,0,0.8);
+}
+.tabs > nav
+{
+	background: url('https://www-rails.samfundet.no/stylesheets/images/header-pattern.png') -100px -40px;
+	background-color: #4b1618;
 	padding: 15px 0px 0px 10px;
 }
 .tabs > nav button
@@ -568,7 +579,7 @@ button
 	font-variant: small-caps;
 	font-size: 18px;
 	letter-spacing: 0px;
-	background-color: #682022;
+	background-color: rgba(123, 38, 40, 0.8);
 }
 
 .tabs > nav button.active 

@@ -19,8 +19,15 @@ document.createWeek = function()
 		}, 400);
 	}
 
-	var nava = week_dom.appendElement("nav", { class: "top" });
+	var nava = week_dom.appendElement("section", { class: "top" });
+	nava.appendElement("h2", "<strong>UKE 43</strong>").css({"font-size":"34px", "color":"#641b17","letter-spacing":"-3px", "margin":"12px 10px 0px"});
+	nava.appendElement("a", "Legg til hele kalenderen", {
+		"href": "/arrangement/ical",
+	}).css({"font-size":"12px", "color":"#2F3E46", "display":"inline-block", "min-height":"16px", "vertical-align":"middle", "padding-top":"1px","margin":"2px 13px", "padding-left":"20px", "background":"url('http://www.starwoodhotels.com/stregis/images/calendar/calendarIcon.png') /*http://www.icul.org/media/calendar_icon.gif')*/ no-repeat"});
+
+	nava.css({"padding": "0px"});
 	
+/*	
 	nava.appendElement("button", "Forrige uke", { 
 		"class": "radius_tl",
 		"data-action": "previous",
@@ -33,7 +40,7 @@ document.createWeek = function()
 		"class": "radius_tr",
 		"data-action": "next",
 	}).onclick = function() { week_dom.next(); };
-	
+*/	
 	var days = week_dom.appendElement("div");
 
 	var navb = week_dom.appendElement("nav", { class: "bottom" });
