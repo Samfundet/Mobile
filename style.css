@@ -113,7 +113,7 @@ body
 	padding: 0;
 	margin: 0;
 }
-section.weekview, a.button
+section.weekview, a.button, section#contact
 {
 	margin: 20px 10px;
 	border-radius: 5px;
@@ -135,11 +135,7 @@ section.weekview div
 	background: url("loading.gif") #eee no-repeat center;
 }
 
-button
-{
-	border: none;
-	background: none;
-}
+
 
 header.top button
 {
@@ -177,9 +173,8 @@ header.top h1 img
 	width: 80%;
 }
 
-nav button
+.weekview nav > button
 {
-
 	display: inline-block;
 	width: 34%;
 
@@ -194,33 +189,33 @@ nav button
 	border-left: 1px #fff solid;
 	font-size: 12px;
 }
-nav.top button
+.weekview nav.top > button
 {
 	border-bottom: 1px #ccc solid;
 }
-nav.bottom button
+.weekview nav.bottom > button
 {
 	border-top: 1px #fff solid;
 }
 
-nav button[data-action=previous] 
+.weekview nav > button[data-action=previous] 
 {
 	width: 33%;
 	border-left: 0px #ccc solid;
 }
-nav button[data-action=next] 
+.weekview nav > button[data-action=next] 
 {
 	width: 33%;
 	border-right: 0px #fff solid;
 }
 
-.radius_tl { border-radius: 5px 0 0 0 !important; }
+/*.radius_tl { border-radius: 5px 0 0 0 !important; }
 .radius_tr { border-radius: 0 5px 0 0 !important; }
 .radius_bl { border-radius: 0 0 0 5px !important; }
 .radius_br { border-radius: 0 0 5px 0 !important; }
+*/
 
-
-.day header
+.day header, #contact
 {
 	background: url('a.jpg');
 	background-size: 100% 100%;
@@ -261,7 +256,7 @@ nav button[data-action=next]
 	border-bottom: 1px #ccc solid;
 }
 
-.day ul li dl dt
+/*.day ul li*/ dl dt
 {
 	color: #2F3E46;
 	font-weight: bold;
@@ -269,7 +264,7 @@ nav button[data-action=next]
 	display: inline-block;
 	width: 50%;
 }
-.day ul li dl dd
+/*.day ul li*/ dl dd
 {
 	color: #2F3E46;
 	display: inline-block;
@@ -277,6 +272,13 @@ nav button[data-action=next]
 	width: 50%;
 	text-align: right;
 }
+
+h4 
+{
+	font-size: 14px;
+	margin-top: 10px;
+}
+h5 {font-size: 13px; margin-top: 20px;}
 
 .event
 {
@@ -414,6 +416,7 @@ strong
 
 .bullet
 {
+	/*display: none !important;*/
 	color: #fff /*rgba(255,255,255,0.6)*/;
 	font-weight: bolder;
 	text-shadow: none;/* 1px -1px -1px rgba(255,255,255,0.2);*/
@@ -538,4 +541,37 @@ a.button
 	/*background-image: none;*/
 	/*color: #9A4E9E;*/
 	text-decoration: underline;
+}
+
+button
+{
+	border: none;
+}
+.tabs > nav
+{
+	background-color:  #4b1618;
+	padding: 15px 0px 0px 10px;
+}
+.tabs > nav button
+{
+	/*width: 48%;
+	margin: 0px;
+
+	/**/
+	margin: 0px 2px 0px 0px;
+	
+	display: inline-block;
+	padding: 10px 20px;
+	
+	color: #fff;
+	text-decoration: none;
+	font-variant: small-caps;
+	font-size: 18px;
+	letter-spacing: 0px;
+	background-color: #682022;
+}
+
+.tabs > nav button.active 
+{
+	background-color: #A03033;
 }

@@ -24,6 +24,14 @@ cache =
 	}
 };
 
+filters = {
+	p: true,
+	y: true,
+	r: true,
+	f: true,
+	g: true,
+}
+
 events = 
 {
 	details: function(eventid)

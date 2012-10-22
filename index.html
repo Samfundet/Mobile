@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="domdidom.js"></script>
 	<script type="text/javascript" src="openinghours.js"></script>
 	<script type="text/javascript" src="events.js"></script>
+<script type="text/javascript" src="contact.js"></script>
+
 
 	<script type="text/javascript" src="weekview.js"></script>
 	<script language="javascript">
@@ -91,7 +93,7 @@
 	    	{
 				if (req.readyState == 4) 
 					success(req.responseText);
-				else
+				else if (failure)
 					failure(req.responseText);
 			};
 			req.open("GET", url, true);
@@ -184,7 +186,7 @@
 
 		function onLoad()
 		{
-			main_dom = document.getElementById("main");
+			main_dom = document.getElementById("front");
 			var weekview = document.createWeek();
 			main_dom.appendChild(weekview);
 			main_dom.appendElement("a", "Legg til i kalender", {
@@ -192,6 +194,38 @@
 				"class": "button"
 			});
 			
+
+			get("/gjenger", function(response)
+			{
+				var info = fetch(response);
+				
+				var sec = document.getElementById("contact").appendElement("section", {"id": "contact"})
+				for (del in info)
+				{
+					var elm = sec.appendElement("h4", del);
+					var folk = info[del];
+					for (fi = 0; fi < folk.length; fi++)
+					{
+						for (wat in folk[fi])
+						{
+							sec.appendElement("h5", folk[fi][wat]);
+							break;
+						}
+						var first = true;
+						var dl = sec.appendElement("dl");
+						for (wut in folk[fi])
+						{
+							if (first) { first = false; continue; }
+							dl.appendElement("dt", wut);
+							dl.appendElement("dd", folk[fi][wut]);
+						}
+
+					}
+				}
+			});
+
+
+			document.getElementById("tabs").makeTabbed();
 
 			settings_dom = document.getElementById("settings");
 			
@@ -332,6 +366,19 @@
 </header>
 
 
+<section id="tabs" class="tabs">
+	<nav>
+		<button>på huset</button>
+		<button>kontakt</button>
+	</nav>
+	<section id="front"></section>
+	<section id="contact"></section>
 </section>
+
+<script>
+
+
+</script>
+
 </body>
 </html>

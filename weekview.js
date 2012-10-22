@@ -1,3 +1,5 @@
+
+
 document.createWeek = function()
 {
 	var week_dom = document.createElement("section");
@@ -113,6 +115,7 @@ document.createWeek = function()
 		day.addEvent = function(event)
 		{
 			var type = categoryToType(event.categories[0].value);
+			if (!(type in filters) || !filters[type]) return;
 
 			var li = this.event_list.appendElement("li", { class: "cat-"+type });
 

@@ -106,3 +106,57 @@ HTMLElement.prototype.measureHeight = function()
 	this.style.overflow = origOverflow;
 	return height;
 };
+
+_ = function(arr)
+{
+	return ({
+		where: function (predicate)
+		{
+			var ret = [];
+			for (i = 0; i < arr.length; i++)
+				if (predicate(arr[i])) ret.push(arr[i]);
+			return ret;
+		},
+		ofElementType: function(tagname)
+		{
+			return this.where(function(t) { return t.tagName == tagname });
+		},
+		each: function(func)
+		{
+			for (i=0; i<arr.length; i++)
+				func(arr[i]);
+		},
+		eachIndex: function(func)
+		{
+			for (i=0; i<arr.length; i++)
+				func(i);
+		}
+	});
+};
+
+HTMLElement.prototype.makeTabbed = function()
+{
+	var nav = _(this.childNodes).ofElementType("NAV")[0];
+	var tabs = _(nav.childNodes).ofElementType("BUTTON");
+	var sections = _(this.childNodes).ofElementType("SECTION");
+	_(sections).eachIndex(function(i)
+	{
+		tabs[i].onclick = function() 
+		{ 
+			if (!tabs[i].hasClass("active"))
+			{
+				for (j = 0; j<sections.length; j++)
+				{
+					if (j != i) 
+					{
+						sections[j].css({"display": "none"});
+						tabs[j].removeClass("active");
+					}
+				}
+				sections[i].css({"display": "block"});
+				tabs[i].addClass("active");
+			}
+		};
+	});
+	tabs[0].onclick();
+};
