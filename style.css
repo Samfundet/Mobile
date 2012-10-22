@@ -78,16 +78,15 @@ header.top
 	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
 	width: 100%;
 
-	top: 0px;
+	/*top: 0px;
 	left: 0px;
-
+*/
 	z-index: 3;
 	display: table; 
 
 	height: 40px;
 	background: #282828;
 	vertical-align: middle;
-
 
 }
 
@@ -114,11 +113,11 @@ body
 	padding: 0;
 	margin: 0;
 }
-section.weekview, a.button, section#contact
+section.weekview, a.button, #contact > article
 {
 	margin: 20px 10px;
-	border-radius: 5px;
-	box-shadow: 1px 1px 20px #000;
+	/*border-radius: 5px;
+	*/box-shadow: 1px 1px 20px #000;
 	-moz-box-shadow: 1px 1px 20px #000;
 	-webkit-box-shadow: 1px 1px 20px #000;
 	
@@ -235,12 +234,17 @@ header.top h1 img
 {
 	color: #999;
 }
-.day ul
+ #contact > article > h4, #contact > article > dl
+ {
+ 	padding: 10px;
+ }
+.day ul, #contact > article > h4, #contact > article > dl
 {
 	list-style: none;
 	margin: 0px;
 	margin: 0px;
 	background: url('a.jpg');
+
 	/*background-image: -webkit-linear-gradient( #eee , #ddd );
 	background-image: -moz-linear-gradient( #eee , #ddd );
 	background-image: -ms-linear-gradient( #eee , #ddd );
@@ -331,6 +335,7 @@ article[data-event-type="happening"] { border-color: #9A4E9E ; }
 button
 {
 	cursor: hand;
+	background: none;
 }
 
 
@@ -551,6 +556,10 @@ button
 {
 	border: none;
 }
+.tabs 
+{
+	display: block;
+}
 .tabs > nav
 {
 -moz-box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
@@ -585,4 +594,29 @@ box-shadow: inner 0 0 15px rgba(0,0,0,0.8);
 .tabs > nav button.active 
 {
 	background-color: #A03033;
+}
+
+
+#contact 
+{
+	background: #A03033;
+}
+
+#contact a
+{
+	color: #2F3E46;
+}
+#contact h3
+{
+	font-weight: bolder;
+	letter-spacing: -2px;
+	background-color: #e8e8e8;
+	margin-bottom: 0px;
+	padding: 10px;
+	font-size: 24px;
+	text-shadow: none;
+	color: #641B17;
+		border-top: 1px #fff solid;
+	border-bottom: 1px #ccc solid;
+	text-transform: uppercase;
 }

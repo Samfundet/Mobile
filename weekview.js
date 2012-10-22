@@ -20,7 +20,8 @@ document.createWeek = function()
 	}
 
 	var nava = week_dom.appendElement("section", { class: "top" });
-	nava.appendElement("h2", "<strong>UKE 43</strong>").css({"font-size":"34px", "color":"#641b17","letter-spacing":"-3px", "margin":"12px 10px 0px"});
+	weeka = nava.appendElement("h2", "UKE 43");
+	weeka.css({"font-size":"34px", "color":"#641b17","font-weight":"bold","letter-spacing":"-3px", "margin":"12px 10px 0px"});
 	nava.appendElement("a", "Legg til hele kalenderen", {
 		"href": "/arrangement/ical",
 	}).css({"font-size":"12px", "color":"#2F3E46", "display":"inline-block", "min-height":"16px", "vertical-align":"middle", "padding-top":"1px","margin":"2px 13px", "padding-left":"20px", "background":"url('http://www.starwoodhotels.com/stregis/images/calendar/calendarIcon.png') /*http://www.icul.org/media/calendar_icon.gif')*/ no-repeat"});
@@ -61,7 +62,7 @@ document.createWeek = function()
 	week_dom.setCurrentWeek = function(weekno)
 	{
 		weekb.innerHTML = "Uke "+ weekno;
-		weeka.innerHTML = "Uke "+ weekno;	
+		weeka.innerHTML = "UKE "+ weekno;	
 	}
 
 	week_dom.clearDays = function()

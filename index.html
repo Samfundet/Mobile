@@ -186,25 +186,27 @@
 
 		function onLoad()
 		{
-			main_dom = document.getElementById("front");
+			main_dom = document.getElementById("main");
 			var weekview = document.createWeek();
-			main_dom.appendChild(weekview);
+			document.getElementById("front").appendChild(weekview);
 
 
 			get("/gjenger", function(response)
 			{
 				var info = fetch(response);
 				
-				var sec = document.getElementById("contact").appendElement("section", {"id": "contact"})
+				var secs = document.getElementById("contact");
 				for (del in info)
 				{
-					var elm = sec.appendElement("h4", del);
+					var sec = secs.appendElement("article");
+					var elm = sec.appendElement("h3", del);
+
 					var folk = info[del];
 					for (fi = 0; fi < folk.length; fi++)
 					{
 						for (wat in folk[fi])
 						{
-							sec.appendElement("h5", folk[fi][wat]);
+							sec.appendElement("h4", folk[fi][wat]);
 							break;
 						}
 						var first = true;
