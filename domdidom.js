@@ -136,27 +136,49 @@ _ = function(arr)
 
 HTMLElement.prototype.makeTabbed = function()
 {
+	var par = this;
 	var nav = _(this.childNodes).ofElementType("NAV")[0];
 	var tabs = _(nav.childNodes).ofElementType("BUTTON");
 	var sections = _(this.childNodes).ofElementType("SECTION");
+	var current = undefined;
+	var block = false;
 	_(sections).eachIndex(function(i)
 	{
+		sections[i].css({"display":"block"});
+		sections[i].css3({
+			"transform": "translateX("+window.innerWidth * i +"px)",
+			"transition": "all 0.4s"
+		});
+		sections[i].css({
+			"position":"absolute",
+			"display":"none"
+		});
 		tabs[i].onclick = function() 
 		{ 
-			if (!tabs[i].hasClass("active"))
+			if (!block && !tabs[i].hasClass("active"))
 			{
-				for (j = 0; j<sections.length; j++)
-				{
-					if (j != i) 
-					{
-						sections[j].css({"display": "none"});
-						tabs[j].removeClass("active");
-					}
-				}
-				sections[i].css({"display": "block"});
+				if (current != undefined) tabs[current].removeClass("active");
 				tabs[i].addClass("active");
+				sections[i].css({"display":"block"});
+				block = true;
+				window.setTimeout(function(){
+					_(sections).eachIndex(function (j)
+					{
+						sections[j].css3({"transform":"translateX("+window.innerWidth*(j-i)+"px)"});
+						if (j != i)
+						{
+							window.setTimeout(function()
+							{
+								sections[j].css({"display":"none"});
+								block = false;
+							},400);
+						}
+					});
+					current = i;
+				}, 0);
 			}
 		};
 	});
+	
 	tabs[0].onclick();
 };
