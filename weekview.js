@@ -71,32 +71,36 @@ document.createWeek = function()
 	}
 	week_dom.addDay = function(date)
 	{
+		var week = getWeekAndDay(date);
+		var today = getWeekAndDay(Date.today());
 		var day = days.appendElement("article", "", { class: "day" }); // grayed
+
+		if (today.week == week.week && week.day < today.day) 
+			day.addClass("past")
 
 		day.header = day.appendElement("header");
 		var h2 = day.header.appendElement("h2");
 		var time = h2.appendElement("time", { datetime: date });
 		
-
+		var calsheet = time.appendElement("span", date.toString("d"), {"class":"date"});
+		calsheet.appendElement("span", date.toString("MMM").toUpperCase());
+		time.appendText(date.toString("dddd").replace("&oslash;", "ø"));
+		var tilt = (Math.random()*20-10);
+		if (tilt > 0) tilt += 3;
+		else tilt -= 3;
+		calsheet.css3( {transform: "rotate("+tilt+"deg)" } );
+	
 		if (date.toString("ddMMyyyy") == Date.today().toString("ddMMyyyy"))
-		{
-			time.appendElement("strong", "I dag");
-			time.appendText(" ( " + date.toString("dddd") + " " + date.toString("d. MMMM")+" )");
 			day.header.setAttribute("id", "today");
-
-		}
-		else
-		{
-			time.appendElement("strong", date.toString("dddd"));
-			time.appendText(" " + date.toString("d. MMMM"));
-		}
 
 		day.eventTypes = {};
 		day.eventTypeCounts = {};
 
 		day.event_list = day.appendElement("ul", {"class":"notop nobottom"});
-	
-		var dl = day.event_list.appendElement("li").appendElement("dl");
+
+		var li = day.event_list.appendElement("li")
+		li.appendElement("div", {"class":"clock"});
+		var dl = li.appendElement("dl");
 		var hours = OpeningHours.forDate(date);
 		for (area in hours)
 		{

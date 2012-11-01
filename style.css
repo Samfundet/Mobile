@@ -1,4 +1,4 @@
-﻿html, body, div, span, applet, object, iframe,
+html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -41,6 +41,10 @@ table {
 border-collapse: collapse;
 border-spacing: 0;
 }
+
+
+
+
 
 
 .settings
@@ -133,7 +137,7 @@ section.weekview nav
 
 }
 
-section.weekview div
+section.weekview > div
 {
 	min-height: 100px;
 	background: url("loading.gif") #eee no-repeat center;
@@ -224,15 +228,17 @@ header.top h1 img
 
 .day header, #contact
 {
+	font-size: 15px;
+	position: relative;
 	background: url('a.jpg');
 	background-size: 100% 100%;
-
 	/*background-image: -webkit-linear-gradient( #EEE , #DDD );
 	background-image: -moz-linear-gradient( #EEE , #DDD );
 	background-image: -ms-linear-gradient( #EEE , #DDD );
 	background-image: -o-linear-gradient( #EEE , #DDD );
 	background-image: linear-gradient( #EEE , #DDD );*/
 }
+
 
 .day.grayed header
 {
@@ -268,11 +274,30 @@ header.top h1 img
 	border-bottom: 1px #ccc solid;
 }
 
+
+.day li
+{
+	position: relative;
+	z-index 1;
+}
+.clock
+{
+	position:absolute;
+	top: 0; bottom: 0; left: 0; right: 0;
+	background: url("http://waktattoos.com/large/Wings_tattoo_291.png") 50% 70% no-repeat;
+	background-size: 80%;
+	opacity: 0.1;
+	z-index: 2;
+
+}
+
+
 /*.day ul li*/ dl dt
 {
 	color: #2F3E46;
-	font-weight: bold;
-	font-size: 12px;
+	/*font-weight: bold;*/
+	font-size: 16px;
+	font-variant: small-caps;
 	display: inline-block;
 	width: 50%;
 }
@@ -280,7 +305,7 @@ header.top h1 img
 {
 	color: #2F3E46;
 	display: inline-block;
-	font-size: 12px;
+	font-size: 16px;
 	width: 50%;
 	text-align: right;
 }
@@ -549,6 +574,11 @@ a.button
 	font-weight: bold;
 }
 
+.past 
+{
+	display: none;
+}
+
 #today strong
 {
 	/*background-image: none;*/
@@ -623,4 +653,120 @@ box-shadow: inner 0 0 15px rgba(0,0,0,0.8);
 		border-top: 1px #fff solid;
 	border-bottom: 1px #ccc solid;
 	text-transform: uppercase;
+}
+
+.day > header
+{
+	padding:  12px 12px 12px 50px ;
+}
+.date 
+{
+	position: absolute;
+	top: -5px;
+	left: 8px;
+	width: 25px;
+	display: inline-block;
+	text-align: center;
+	font-weight: bolder;
+	font-size: 23px;
+	background: #fff;
+	padding: 5px;
+	box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
+}
+
+.date > span
+{
+	display: block;
+	font-size: 10px;
+}
+
+#today
+{
+	font-weight: bold;
+	color: #A03033;
+}
+
+.popup button:last-child
+{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	left: 10px;
+	font-size: 25px;
+		background: url("a.jpg"); color: #458B00;
+	background-size: 100% 100%;
+			border-radius: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
+	/*color: #fff;
+	*/text-shadow: 0px 1px 1px rgba(255,255,255,1);
+	font-weight: bolder;
+	font-variant: small-caps;
+	height: 100px;
+}
+button > span
+{
+	font-size: 14px;
+	display: block;
+	clear: both;
+	color: rgba(0,0,0,0.4);
+}
+button.close
+{
+	font-size: 22px;
+	font-weight: bolder;
+	font-variant: small-caps;
+	color: #D06063;
+	text-shadow: 0px 0px 10px rgba(0,0,0,1);
+	background: #A03033;
+			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
+	padding: 0px;
+		border-radius: 15px;
+		background-size: 100% !important; 
+		width: 30px;
+		height: 30px;
+		display: block;
+		float: right;
+		text-align: center;
+}
+
+.popup
+{
+	background: url('a.jpg');
+	background-size: 100% 100%;
+	position: fixed;
+	z-index: 10;
+	border-radius: 20px;
+	color: #2F3E46;
+	padding: 10px;
+	text-shadow: 0 -1px 1px rgba(255,255,255,1);
+	box-shadow: 1px 1px 10px rgba(0,0,0,1);
+	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,1);
+	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1);
+	top: 10px; left: 10px; right: 10px; bottom: 10px;
+}
+.popup p 
+{
+	font-size: 15px;
+}
+.popup h2
+{
+	padding-top: 10px;
+	font-size: 20px;
+}
+.popup > section
+{
+		position: absolute;
+		overflow: auto;
+		top: 55px;
+		left: 10px;
+		right: 10px;
+		bottom: 120px;
 }
