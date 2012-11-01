@@ -1,3 +1,23 @@
+Date.parseIcalDate= function(v)
+{
+	var year = parseInt(v.substring(0,4), 10);
+	var month = parseInt(v.substring(4,6), 10) - 1;
+	var day = parseInt(v.substring(6,8), 10); 
+	var hours = parseInt(v.substring(9,11), 10);
+	var minutes = parseInt(v.substring(11,13), 10);
+	var seconds = parseInt(v.substring(13,15), 10);
+	// look, a three headed monkey! (Obs, fungerer ikke i India!)
+	var utcOffset = parseInt(Date.today().getUTCOffset().substring(1,3), 10);
+	var date = new Date();
+	date.setYear(year);
+	date.setMonth(month);
+	date.setDate(day);
+	date.setHours(hours + utcOffset);
+	date.setMinutes(minutes);
+	date.setSeconds(seconds);
+	return date;
+}
+
 //
 // Usage: 
 // dom.appendElement("h1", "Hei", {"class": "minklasse"});
@@ -134,6 +154,17 @@ _ = function(arr)
 	});
 };
 
+
+HTMLElement.prototype.makeAccordion = function()
+{
+	var arts = _(this.cildNodes).ofElementType("ARTICLE");
+	_(arts).each(function(art)
+	{
+		var header = _(art.childNodes).ofElementType("HEADER")[0];
+		var body = _(art.childNodes).where(function(b) { return b != header && "tagName" in b; })[0];
+		body.css({"display":"none"});
+	});
+}
 HTMLElement.prototype.makeTabbed = function()
 {
 	var par = this;
@@ -142,40 +173,46 @@ HTMLElement.prototype.makeTabbed = function()
 	var sections = _(this.childNodes).ofElementType("SECTION");
 	var current = undefined;
 	var block = false;
+	var group = this.appendElement("div");
+	par.css({
+		"overflow": "hidden",
+	});
 	_(sections).eachIndex(function(i)
 	{
-		sections[i].css({"display":"block"});
-		sections[i].css3({
-			"transform": "translateX("+window.innerWidth * i +"px)",
-			"transition": "all 0.4s"
+		group.css({ 
+			"width": sections.length*100+"%",
+			"float":"left",
+		 });
+		group.css3({
+			"transition": "-webkit-transform 0.4s ease-in-out"
 		});
 		sections[i].css({
-			"position":"absolute",
-			"display":"none"
+			"float":"left",
+			"width": 1/sections.length*100+"%",
 		});
+		group.appendChild(sections[i]);
+
 		tabs[i].onclick = function() 
-		{ 
+		{
 			if (!block && !tabs[i].hasClass("active"))
 			{
-				if (current != undefined) tabs[current].removeClass("active");
 				tabs[i].addClass("active");
-				sections[i].css({"display":"block"});
-				block = true;
-				window.setTimeout(function(){
+				if (current != undefined) 
+					tabs[current].removeClass("active");
+
+				//_(sections).each(function(tab) { sections[i].css({"height": "auto"}); });
+				//group.css({"height":"200px"});
+
+				group.css3({"transform": "translateX(-"+ i/sections.length*100 +"%)"});
+				/*window.setTimeout(function()
+				{
 					_(sections).eachIndex(function (j)
 					{
-						sections[j].css3({"transform":"translateX("+window.innerWidth*(j-i)+"px)"});
-						if (j != i)
-						{
-							window.setTimeout(function()
-							{
-								sections[j].css({"display":"none"});
-								block = false;
-							},400);
-						}
+						if (j != i) sections[j].css({"height":"1px"});
 					});
-					current = i;
-				}, 0);
+				}, 400);*/
+
+				current = i;
 			}
 		};
 	});

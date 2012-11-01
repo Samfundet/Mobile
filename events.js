@@ -56,7 +56,6 @@ events =
 	fetchWeek: function(weekno, success, failure)
 	{
 		var from = mondayOfWeek(weekno);
-		//alert(from);
 		var to = from.clone();
 		to.addDays(7);
 		this.fetch(from, to, success, failure);

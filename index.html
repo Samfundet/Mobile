@@ -18,15 +18,14 @@
 	<script type="text/javascript" src="domdidom.js"></script>
 	<script type="text/javascript" src="openinghours.js"></script>
 	<script type="text/javascript" src="events.js"></script>
-<script type="text/javascript" src="contact.js"></script>
-
+	<script type="text/javascript" src="contact.js"></script>
 
 	<script type="text/javascript" src="weekview.js"></script>
 	<script language="javascript">
 
 		function categoryToType(cat) 
 		{ 
-			return 	{
+			var v = {
 				Film: 'f',
 				Excenteraften: 'p',
 				Teater: 'y',
@@ -36,8 +35,12 @@
 				Fotballkamp: 'g',
 				DJ: 'p',
 				Quiz: 'y',
-				Temafest: 'p'
-			}[cat]; 
+				Temafest: 'p',
+				Møte: 'r',
+				"Bokstavelig talt": 'r',
+			}[cat];
+			if (v != undefined) return v;
+			return 'r'
 		}
 
 		type_to_name = 
@@ -77,14 +80,6 @@
 			return ret;
 		}
 
-		function parseDatetime(datetime)
-		{
-			//"yyyy-MM-dd HH:mm:ssZ",
-			//return datetime;
-			var v = datetime;
-			return v.substring(0,4)+"-"+v.substring(4,6)+"-"+v.substring(6,8) + " " 
-			     + v.substring(9,11) + ":" + v.substring(11,13) + ":" + v.substring(13,15) + ""; 
-		}
 
 	    function get(url, success, failure)
 	    {
@@ -172,10 +167,7 @@
 				for (i in events)
 				{
 					var item = events[i];
-					var datestr = parseDatetime(item.dtstart.value);
-					item.date = Date.parse(datestr);
-					// look, a three headed monkey!
-					item.date.addHours(Date.today().getUTCOffset().substring(1,3));
+					item.date = Date.parseIcalDate(item.dtstart.value); 
 					item.time = item.date.toString("HH:mm");
 					cache.addEvent(item);
 				}
@@ -210,16 +202,18 @@
 							break;
 						}
 						var first = true;
-						var dl = sec.appendElement("dl");
+						/*var dl = sec.appendElement("dl");
 						for (wut in folk[fi])
 						{
 							if (first) { first = false; continue; }
 							dl.appendElement("dt", wut);
 							dl.appendElement("dd", folk[fi][wut]);
-						}
+						}*/
 
 					}
+					//sec.makeAccordion();
 				}
+
 			});
 
 
@@ -368,9 +362,11 @@
 	<nav>
 		<button>på huset</button>
 		<button>kontakt</button>
+		<button>...</button>
 	</nav>
 	<section id="front"></section>
 	<section id="contact"></section>
+	<section><a href="samfundet.no" class="button">Gå til den mobiluvennligesiden</a></section>
 </section>
 
 <script>
