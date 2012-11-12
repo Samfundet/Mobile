@@ -708,6 +708,7 @@ box-shadow: inner 0 0 15px rgba(0,0,0,0.8);
 	font-weight: bolder;
 	font-variant: small-caps;
 	height: 100px;
+	text-shadow: 0 2px 0 rgba(255,255,255,1) !important;
 }
 button > span
 {
@@ -721,9 +722,10 @@ button.close
 	font-size: 22px;
 	font-weight: bolder;
 	font-variant: small-caps;
-	color: #D06063;
-	text-shadow: 0px 0px 10px rgba(0,0,0,1);
-	background: #A03033;
+	color:#A03033; /* #D06063;
+		*/text-shadow: 0 0 5px rgba(0,0,0,1.0) !important;
+	/*text-shadow: 0px 0px 10px rgba(0,0,0,1);
+	*/background: #A03033;
 			box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
 	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1.5);
@@ -746,11 +748,12 @@ button.close
 	border-radius: 20px;
 	color: #2F3E46;
 	padding: 10px;
-	text-shadow: 0 -1px 1px rgba(255,255,255,1);
+
 	box-shadow: 1px 1px 10px rgba(0,0,0,1);
 	-moz-box-shadow: 1px 1px 10px rgba(0,0,0,1);
 	-webkit-box-shadow: 1px 1px 10px rgba(0,0,0,1);
 	top: 10px; left: 10px; right: 10px; bottom: 10px;
+	text-shadow: 0 2px 0 rgba(255,255,255,1) !important;
 }
 .popup p 
 {
